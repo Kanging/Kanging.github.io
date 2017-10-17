@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,NFC,IOT," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述NFC技术是一种短距高频的无线电技术，在13.56MHz频率运行于10厘米距离内。其传输速度有106 Kbit/秒、212 Kbit/秒或者424 Kbit/秒三种，有主动和被动两种读取模式。">
+<meta name="keywords" content="Android,NFC,IOT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NFC标签的读写">
+<meta property="og:url" content="http://Kanging.github.io/2016/01/19/NFCforAndroid/index.html">
+<meta property="og:site_name" content="周康的博客">
+<meta property="og:description" content="概述NFC技术是一种短距高频的无线电技术，在13.56MHz频率运行于10厘米距离内。其传输速度有106 Kbit/秒、212 Kbit/秒或者424 Kbit/秒三种，有主动和被动两种读取模式。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=b63d29e4ee24b899de69713e5e3631ad/50da81cb39dbb6fdcc63e6c20e24ab18972b371d.jpg">
+<meta property="og:updated_time" content="2017-10-17T01:35:30.877Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NFC标签的读写">
+<meta name="twitter:description" content="概述NFC技术是一种短距高频的无线电技术，在13.56MHz频率运行于10厘米距离内。其传输速度有106 Kbit/秒、212 Kbit/秒或者424 Kbit/秒三种，有主动和被动两种读取模式。">
+<meta name="twitter:image" content="https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=b63d29e4ee24b899de69713e5e3631ad/50da81cb39dbb6fdcc63e6c20e24ab18972b371d.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://Kanging.github.io/2016/01/19/NFCforAndroid/"/>
+
+
+
+
+
+  <title>NFC标签的读写 | 周康的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">周康的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一蓑烟雨任平生</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/aboutme/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            简历
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2016/01/19/NFCforAndroid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="周康">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周康的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NFC标签的读写</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-19T15:51:31+08:00">
+                2016-01-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=b63d29e4ee24b899de69713e5e3631ad/50da81cb39dbb6fdcc63e6c20e24ab18972b371d.jpg" rel="gallery_cj8uyipen0003jwr8x9f7r5o5"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=b63d29e4ee24b899de69713e5e3631ad/50da81cb39dbb6fdcc63e6c20e24ab18972b371d.jpg" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>NFC技术是一种短距高频的无线电技术，在13.56MHz频率运行于10厘米距离内。其传输速度有106 Kbit/秒、212 Kbit/秒或者424 Kbit/秒三种，有主动和被动两种读取模式。</p>
+<a id="more"></a>
+<h1 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h1><ol>
+<li><p>权限的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=&quot;android.permission.NFC&quot; /&gt;</div><div class="line">        &lt;!-- 要求当前设备必须要有NFC芯片 --&gt;</div><div class="line">&lt;uses-feature android:name=&quot;android.hardware.nfc&quot;</div><div class="line">        android:required=&quot;true&quot; /&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>当我们在注册activity的时候还需要加上过滤NFC的intent，目的是一旦NFC标签靠近手机，手机发起响应不能让它调起系统自带的NFC应用，而是我们的应用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;intent-filter&gt;</div><div class="line">        &lt;action android:name=&quot;android.nfc.action.TAG_DISCOVERED&quot;/&gt;</div><div class="line"> &lt;/intent-filter&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>定义NFC标签的规则标准，目的是哪些符合标准的NFC标签可以让自己的应用响应。该标准由xml文件编写，例如创建一个nfc_model.xml的文件。该文件放在rew资源中的xml文件夹中<br><img src="http://img.blog.csdn.net/20170119151825302?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzIxNTE1Njc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="”180”" height="”300”"></p>
+<ul>
+<li><p>nfc_model.xml里面的内容有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;resources xmlns:xliff=&quot;urn:oasis:names:tc:xliff:document:1.2&quot;&gt;</div><div class="line">    &lt;tech-list&gt;</div><div class="line">       &lt;tech&gt;android.nfc.tech.MifareClassic&lt;/tech&gt;</div><div class="line">    &lt;/tech-list&gt;</div><div class="line">&lt;/resources&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在注册activity时将nfc_model.xml文件添加进去:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;meta-data android:name=&quot;android.nfc.action.TECH_DISCOVERED&quot;</div><div class="line">                android:resource=&quot;@xml/nfc_model&quot; /&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>在Activity中重写onNewIntent，对NFC标签无论是读还是写都会调用这个重写的方法，数据格式是ndef</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"> <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onNewIntent</span><span class="params">(Intent intent)</span> </span>&#123;<span class="comment">//通过intent来作为数据的载体</span></div><div class="line">        <span class="keyword">if</span>(iswrite)&#123;<span class="comment">//是写入</span></div><div class="line">            Tag detectedTag =intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);</div><div class="line">            NdefMessage ndefMessage = <span class="keyword">new</span> NdefMessage(<span class="keyword">new</span> NdefRecord[]&#123;createTextRecord(mTagText)&#125;);<span class="comment">//写入ndef格式的字符串</span></div><div class="line">            <span class="keyword">boolean</span> result = writeTag(ndefMessage, detectedTag);</div><div class="line">            <span class="keyword">if</span> (result) &#123;<span class="comment">//写入成功</span></div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;<span class="comment">//是读</span></div><div class="line">            readNfcTag(intent);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> *读</span></div><div class="line"><span class="comment"> */</span></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readNfcTag</span><span class="params">(Intent intent)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) &#123;<span class="comment">//标签靠近手机时，手机响应NFC标签</span></div><div class="line">         Parcelable[] rawMsgs = intent.getParcelableArrayExtra(</div><div class="line">                    NfcAdapter.EXTRA_NDEF_MESSAGES);<span class="comment">//获取序列数组</span></div><div class="line">            NdefMessage msgs[] = <span class="keyword">null</span>;</div><div class="line">            <span class="keyword">if</span> (rawMsgs != <span class="keyword">null</span>) &#123;<span class="comment">//将数组放进NdefMessage中</span></div><div class="line">                msgs = <span class="keyword">new</span> NdefMessage[rawMsgs.length];</div><div class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rawMsgs.length; i++) &#123;</div><div class="line">                    msgs[i] = (NdefMessage) rawMsgs[i];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            NdefRecord record = msgs[<span class="number">0</span>].getRecords()[<span class="number">0</span>];</div><div class="line">            String textRecord = parseTextRecord(record);</div><div class="line">            <span class="comment">//textRecord 就是读到的nfc标签里的字符串了</span></div><div class="line">        &#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line"><span class="comment">     * 将文本信息转成ndef格式的NdefRecord </span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> text</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span></span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">protected</span>  NdefRecord <span class="title">createTextRecord</span><span class="params">(String text)</span> </span>&#123;</div><div class="line">        <span class="keyword">byte</span>[] langBytes = Locale.CHINA.getLanguage().getBytes(Charset.forName(<span class="string">"US-ASCII"</span>));</div><div class="line">        Charset utfEncoding = Charset.forName(<span class="string">"UTF-8"</span>);</div><div class="line">        <span class="comment">//将文本转换为UTF-8格式</span></div><div class="line">        <span class="keyword">byte</span>[] textBytes = text.getBytes(utfEncoding);</div><div class="line">        <span class="comment">//设置状态字节编码最高位数为0</span></div><div class="line">        <span class="keyword">int</span> utfBit = <span class="number">0</span>;</div><div class="line">        <span class="comment">//定义状态字节</span></div><div class="line">        <span class="keyword">char</span> status = (<span class="keyword">char</span>) (utfBit + langBytes.length);</div><div class="line">        <span class="keyword">byte</span>[] data = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1</span> + langBytes.length + textBytes.length];</div><div class="line">        <span class="comment">//设置第一个状态字节，先将状态码转换成字节</span></div><div class="line">        data[<span class="number">0</span>] = (<span class="keyword">byte</span>) status;</div><div class="line">        <span class="comment">//设置语言编码，使用数组拷贝方法，从0开始拷贝到data中，拷贝到data的1到langBytes.length的位置</span></div><div class="line">        System.arraycopy(langBytes, <span class="number">0</span>, data, <span class="number">1</span>, langBytes.length);</div><div class="line">        <span class="comment">//设置文本字节，使用数组拷贝方法，从0开始拷贝到data中，拷贝到data的1 + langBytes.length</span></div><div class="line">        <span class="comment">//到textBytes.length的位置</span></div><div class="line">        System.arraycopy(textBytes, <span class="number">0</span>, data, <span class="number">1</span> + langBytes.length, textBytes.length);</div><div class="line">        <span class="comment">//通过字节传入NdefRecord对象</span></div><div class="line">        <span class="comment">//NdefRecord.RTD_TEXT：传入类型 读写</span></div><div class="line">        NdefRecord ndefRecord = <span class="keyword">new</span> NdefRecord(NdefRecord.TNF_WELL_KNOWN,</div><div class="line">                NdefRecord.RTD_TEXT, <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">0</span>], data);</div><div class="line">        <span class="keyword">return</span> ndefRecord;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>有了读和写，我们就能进行基本的数据交互。十分的简单。NFC标签属于IOT的范畴，有很多种的用途。更多的逻辑处理是在于读写的操作上。标签里如果需要存在大量的数据的话，需要把写入的文本数据写成json格式的字符串，再通过手机获取信息发送的服务器。</p>
+</li>
+</ol>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+	
+	<div>
+  
+    
+<div style="text-align:center;color: #ccc;font-size:14px;">
+------ 本文结束 ------</div>
+<br/>
+<div style="border: 1px solid black">
+<div style="margin-left:10px">
+
+<span style="font-weight:blod">版权声明</span>
+<img src="http://kuangqi.me/images/cc.png" >
+<br/>
+<link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>发布时间: </span>2016年01月19日 - 15:01</p>
+  <p><span>原始链接: </span><a href="/2016/01/19/NFCforAndroid/" title="NFC标签的读写">http://Kanging.github.io/2016/01/19/NFCforAndroid/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://Kanging.github.io/2016/01/19/NFCforAndroid/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议: </span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+</div>
+
+  
+</div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/NFC/" rel="tag"># NFC</a>
+          
+            <a href="/tags/IOT/" rel="tag"># IOT</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/01/introduce/" rel="prev" title="置顶说明">
+                置顶说明 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537"
+                alt="周康" />
+            
+              <p class="site-author-name" itemprop="name">周康</p>
+              <p class="site-description motion-element" itemprop="description">爱学习的好孩子</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="799310042@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/zhouklang" target="_blank" title="新浪微博">
+                    
+                      <i class="fa fa-fw fa-globe"></i>新浪微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:周康?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#具体实现："><span class="nav-number">2.</span> <span class="nav-text">具体实现：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">周康</span>
+
+  
+</div>
+
+
+  <!-- <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div> 
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div> -->
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
