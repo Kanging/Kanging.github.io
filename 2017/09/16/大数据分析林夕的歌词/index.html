@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="Java,算法," />
+  <meta name="keywords" content="Java,其他," />
 
 
 
@@ -105,20 +105,20 @@
 
 
 
-<meta name="description" content="概述面试的时候遇到过这样一道算法题，已知HashMap map,User类中有int age，String name属性。请根据User中的age进行降序排序。我们知道HashMap是没有顺序的，这里应该怎么处理呢？回来后想想应该用LinkedHashMap，LinkedHashMap是有顺序的而且是继承HashMap。">
-<meta name="keywords" content="Java,算法">
+<meta name="description" content="概述最近看了一篇名叫《我分析了42万字歌词，就为了搞清楚民谣歌手在唱些什么》的文章，一程序员利用爬虫技术爬到大约42万字的民谣歌曲的歌词，再分词解析出每个词出现的频率，最后分析得出民谣歌手的情绪，喜爱的城市、季节等等，用数据来说话，比一句“我觉得”来的更有说服力。这对于酷爱听歌的我来说显得十分的有趣。刚好今天有空，我也尝试分析一下大词作家林夕先生的歌词里到底写了些什么。">
+<meta name="keywords" content="Java,其他">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HashMap排序">
-<meta property="og:url" content="http://Kanging.github.io/2016/06/30/HashMap算法/index.html">
+<meta property="og:title" content="大数据分析林夕的歌词">
+<meta property="og:url" content="http://Kanging.github.io/2017/09/16/大数据分析林夕的歌词/index.html">
 <meta property="og:site_name" content="周康的博客">
-<meta property="og:description" content="概述面试的时候遇到过这样一道算法题，已知HashMap map,User类中有int age，String name属性。请根据User中的age进行降序排序。我们知道HashMap是没有顺序的，这里应该怎么处理呢？回来后想想应该用LinkedHashMap，LinkedHashMap是有顺序的而且是继承HashMap。">
+<meta property="og:description" content="概述最近看了一篇名叫《我分析了42万字歌词，就为了搞清楚民谣歌手在唱些什么》的文章，一程序员利用爬虫技术爬到大约42万字的民谣歌曲的歌词，再分词解析出每个词出现的频率，最后分析得出民谣歌手的情绪，喜爱的城市、季节等等，用数据来说话，比一句“我觉得”来的更有说服力。这对于酷爱听歌的我来说显得十分的有趣。刚好今天有空，我也尝试分析一下大词作家林夕先生的歌词里到底写了些什么。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508492533211&di=de3abd21f5b11532b18ebae729c43827&imgtype=0&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20160914%2F38b0c776230244d7a7b7431c85bde0ac_th.jpg">
-<meta property="og:updated_time" content="2017-10-20T07:00:05.220Z">
+<meta property="og:image" content="http://p4.music.126.net/EoEKzvb4LcJ6DzInb5fTng==/921390744102043.jpg?param=640y300">
+<meta property="og:updated_time" content="2017-10-23T00:35:35.593Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HashMap排序">
-<meta name="twitter:description" content="概述面试的时候遇到过这样一道算法题，已知HashMap map,User类中有int age，String name属性。请根据User中的age进行降序排序。我们知道HashMap是没有顺序的，这里应该怎么处理呢？回来后想想应该用LinkedHashMap，LinkedHashMap是有顺序的而且是继承HashMap。">
-<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508492533211&di=de3abd21f5b11532b18ebae729c43827&imgtype=0&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20160914%2F38b0c776230244d7a7b7431c85bde0ac_th.jpg">
+<meta name="twitter:title" content="大数据分析林夕的歌词">
+<meta name="twitter:description" content="概述最近看了一篇名叫《我分析了42万字歌词，就为了搞清楚民谣歌手在唱些什么》的文章，一程序员利用爬虫技术爬到大约42万字的民谣歌曲的歌词，再分词解析出每个词出现的频率，最后分析得出民谣歌手的情绪，喜爱的城市、季节等等，用数据来说话，比一句“我觉得”来的更有说服力。这对于酷爱听歌的我来说显得十分的有趣。刚好今天有空，我也尝试分析一下大词作家林夕先生的歌词里到底写了些什么。">
+<meta name="twitter:image" content="http://p4.music.126.net/EoEKzvb4LcJ6DzInb5fTng==/921390744102043.jpg?param=640y300">
 
 
 
@@ -148,13 +148,13 @@
 
 
 
-  <link rel="canonical" href="http://Kanging.github.io/2016/06/30/HashMap算法/"/>
+  <link rel="canonical" href="http://Kanging.github.io/2017/09/16/大数据分析林夕的歌词/"/>
 
 
 
 
 
-  <title>HashMap排序 | 周康的博客</title>
+  <title>大数据分析林夕的歌词 | 周康的博客</title>
   
 
 
@@ -301,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2016/06/30/HashMap算法/">
+    <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2017/09/16/大数据分析林夕的歌词/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="周  康">
@@ -318,7 +318,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HashMap排序</h1>
+          <h1 class="post-title" itemprop="name headline">大数据分析林夕的歌词</h1>
         
 
         <div class="post-meta">
@@ -330,8 +330,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-30T14:46:21+08:00">
-                2016-06-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T10:05:11+08:00">
+                2017-09-16
               </time>
             
 
@@ -353,8 +353,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/其他/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
                   </a>
                 </span>
 
@@ -393,9 +393,9 @@
           
             <div class="post-gallery-row">
               <a class="post-gallery-img fancybox"
-                 href="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508492533211&di=de3abd21f5b11532b18ebae729c43827&imgtype=0&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20160914%2F38b0c776230244d7a7b7431c85bde0ac_th.jpg" rel="gallery_cj93ggbiy000068r869hy7qt8"
+                 href="http://p4.music.126.net/EoEKzvb4LcJ6DzInb5fTng==/921390744102043.jpg?param=640y300" rel="gallery_cj93ggbji000a68r8cqa6nwk2"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
-                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508492533211&di=de3abd21f5b11532b18ebae729c43827&imgtype=0&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20160914%2F38b0c776230244d7a7b7431c85bde0ac_th.jpg" itemprop="contentUrl"/>
+                <img src="http://p4.music.126.net/EoEKzvb4LcJ6DzInb5fTng==/921390744102043.jpg?param=640y300" itemprop="contentUrl"/>
               </a>
             
           
@@ -406,8 +406,14 @@
       
 
       
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p></p><p>面试的时候遇到过这样一道算法题，已知HashMap<integer,user> map,User类中有int age，String name属性。请根据User中的age进行降序排序。我们知道HashMap是没有顺序的，这里应该怎么处理呢？回来后想想应该用LinkedHashMap，LinkedHashMap是有顺序的而且是继承HashMap。</integer,user></p><br><a id="more"></a><p></p>
-<h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMap</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		TestMap t = <span class="keyword">new</span> TestMap();</div><div class="line">		HashMap&lt;Integer, User&gt; hash = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">		<span class="comment">//根据User的年龄进行排序</span></div><div class="line">		hash.put(<span class="number">1</span>, <span class="keyword">new</span> User(<span class="number">22</span>, <span class="string">"张三"</span>));</div><div class="line">		hash.put(<span class="number">2</span>, <span class="keyword">new</span> User(<span class="number">19</span>, <span class="string">"李四"</span>));</div><div class="line">		hash.put(<span class="number">3</span>, <span class="keyword">new</span> User(<span class="number">23</span>, <span class="string">"王五"</span>));</div><div class="line">		hash.put(<span class="number">4</span>, <span class="keyword">new</span> User(<span class="number">18</span>, <span class="string">"Tom"</span>));</div><div class="line">		</div><div class="line">		HashMap&lt;Integer, User&gt; ha = t.Test(hash);</div><div class="line">		System.out.println(<span class="string">"-----------"</span>+ha);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">private</span> HashMap&lt;Integer, User&gt; <span class="title">Test</span><span class="params">(HashMap&lt;Integer, User&gt; hash)</span></span>&#123;</div><div class="line">		Set&lt;Entry&lt;Integer, User&gt;&gt; en = hash.entrySet();</div><div class="line">		List&lt;Entry&lt;Integer, User&gt;&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;(en);</div><div class="line">		<span class="comment">//把排序好的放进List里面</span></div><div class="line">		Collections.sort(list, <span class="keyword">new</span> Comparator&lt;Entry&lt;Integer, User&gt;&gt;() &#123;</div><div class="line"></div><div class="line">			<span class="meta">@Override</span></div><div class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Entry&lt;Integer, User&gt; o1, Entry&lt;Integer, User&gt; o2)</span> </span>&#123;</div><div class="line">				</div><div class="line">				<span class="keyword">return</span> o1.getValue().getAge()-o2.getValue().getAge();</div><div class="line"><span class="comment">//				return o1.getKey()-o2.getKey();</span></div><div class="line">			&#125;</div><div class="line">			</div><div class="line">		&#125;);</div><div class="line">		<span class="comment">//再把排序好的LIst遍历到LinkedHashMap</span></div><div class="line">		LinkedHashMap&lt;Integer, User&gt; lm = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</div><div class="line">		</div><div class="line">		<span class="keyword">for</span> (Entry&lt;Integer, User&gt; entry : list) &#123;</div><div class="line">			</div><div class="line">			lm.put(entry.getKey(),entry.getValue());</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> lm;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</div><div class="line">		</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(<span class="keyword">int</span> age, String name)</span> </span>&#123;</div><div class="line">			<span class="keyword">this</span>.age = age;</div><div class="line">			<span class="keyword">this</span>.name = name;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">int</span> age;</div><div class="line">		String name;</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</div><div class="line">			<span class="keyword">return</span> age;</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</div><div class="line">			<span class="keyword">this</span>.age = age;</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">			<span class="keyword">return</span> name;</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">			<span class="keyword">this</span>.name = name;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>最近看了一篇名叫《我分析了42万字歌词，就为了搞清楚民谣歌手在唱些什么》的文章，一程序员利用爬虫技术爬到大约42万字的民谣歌曲的歌词，再分词解析出每个词出现的频率，最后分析得出民谣歌手的情绪，喜爱的城市、季节等等，用数据来说话，比一句“我觉得”来的更有说服力。这对于酷爱听歌的我来说显得十分的有趣。刚好今天有空，我也尝试分析一下大词作家林夕先生的歌词里到底写了些什么。</p>
+<a id="more"></a>
+<h1 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h1><p><img src="http://img.blog.csdn.net/20170529151633946" width="”300”" height="”180”"><br><img src="http://img.blog.csdn.net/20170529151651618" width="”300”" height="”180”"><br>程序我是用Java语言写的，其中核心的部分就是分词，也是一个小难点，再统计一下每个元素（每个词）出现的频率，将结果输出到Excel中，再作出分析图。<br> 上网搜了一下，不看不知道，着实吓了我一跳，林夕填过的歌词竟然有2500多首，合起来有60多万字（我连写800字的作文都困难⊙﹏⊙b汗）！注意，这里每首歌歌词都是是不含第二节部分!<br> <img src="http://img.blog.csdn.net/20170529133540274" width="”90”" height="”160”"></p>
+<h1 id="分析结果"><a href="#分析结果" class="headerlink" title="分析结果"></a>分析结果</h1><p><img src="http://img.blog.csdn.net/20170529133551146" width="”180”" height="”180”"><br>总体来说歌词还是以写男女之间的情爱为主，可以看出除开词作者介绍，出现最多的三个词是“没有”，“一个”和“爱”。<br><img src="http://img.blog.csdn.net/20170529153401125" width="”300”" height="”500”"> 林夕歌词的正面情绪大于负面情绪，乐观大于悲观。可以回忆一下，平时听这些歌是不是能给你更多得溫暖跟鼓舞，这其中“爱”字出现了7083次，也是出现最多的一个汉字，并且“love”也是出现最多的单词。不过往往决定一首歌情感的往往是编曲。<br><img src="http://img.blog.csdn.net/20170529143826411" width="”90”" height="”180”"><br>林夕写了2000多首歌词，跟王菲合作的次数最多，有95首歌由王菲来演唱。第二名竟然是谢霆锋。。。可以可以。<br><img src="http://img.blog.csdn.net/20170529150126971" width="”300”" height="”180”"><br><img src="http://img.blog.csdn.net/20170529150207923" width="”300”" height="”180”"> 如果说一个人作品能说明一个人的性格和喜好的话，那么林夕先生最喜欢的颜色是黑色（167），最爱穿的衣服是毛衣（12），最喜欢的花是玫瑰（51），最喜欢的成语是人山人海（59）和地老天荒（37），跟母亲（84）的关系比跟父亲（67）的关系好。描写男人（523）比女人（267）多了近一倍。歌词中写今天有317次，明天有119次，昨天有60次。可以看出林夕更珍惜当下，并憧憬未来。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这次数据分析异常的简单，所有东西做下来花了大概三个小时的时间，纯粹是想尝试一下数据分析的感觉。林夕给我的感觉是他非常的内敛，沉稳和低调。很多流行的情歌多以伤感、悲痛等暗色系为主题，但林夕歌词里却存在大量的美好事物，如爱（871）、拥抱（376）、幸福（286）等等，是个内向的暖男。我最喜欢他填写的一首词是《钟无艳》，能让人切实的知道这首歌表达的是什么，搭配上粤语的吐字发音，确实让人惊艳。</p>
+<p></p><p><br></p><br>最后，让我们来感受一下<p></p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=308353&auto=0&height=66"></iframe>
+
 <hr>
 
       
@@ -436,9 +442,9 @@
 <br/>
 <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
   <p><span>文章作者: </span><a href="/" title="访问 周  康 的个人博客">周  康</a></p>
-  <p><span>发布时间: </span>2016年06月30日 - 14:06</p>
-  <p><span>原始链接: </span><a href="/2016/06/30/HashMap算法/" title="HashMap排序">http://Kanging.github.io/2016/06/30/HashMap算法/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://Kanging.github.io/2016/06/30/HashMap算法/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间: </span>2017年09月16日 - 10:09</p>
+  <p><span>原始链接: </span><a href="/2017/09/16/大数据分析林夕的歌词/" title="大数据分析林夕的歌词">http://Kanging.github.io/2017/09/16/大数据分析林夕的歌词/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://Kanging.github.io/2017/09/16/大数据分析林夕的歌词/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议: </span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -453,7 +459,7 @@
           
             <a href="/tags/Java/" rel="tag"># Java</a>
           
-            <a href="/tags/算法/" rel="tag"># 算法</a>
+            <a href="/tags/其他/" rel="tag"># 其他</a>
           
         </div>
       
@@ -466,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/19/okhttp+Rxjava+Retrofit完全封转，即拿即用/" rel="next" title="OkHttp+RxJava+Retrofit完全封转">
-                <i class="fa fa-chevron-left"></i> OkHttp+RxJava+Retrofit完全封转
+              <a href="/2017/01/19/NFCforAndroid/" rel="next" title="NFC标签的读写">
+                <i class="fa fa-chevron-left"></i> NFC标签的读写
               </a>
             
           </div>
@@ -476,8 +482,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/01/19/NFCforAndroid/" rel="prev" title="NFC标签的读写">
-                NFC标签的读写 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/01/01/introduce/" rel="prev" title="置顶说明">
+                置顶说明 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -636,7 +642,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#具体实现"><span class="nav-number">2.</span> <span class="nav-text">具体实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#具体实现："><span class="nav-number">2.</span> <span class="nav-text">具体实现：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析结果"><span class="nav-number">3.</span> <span class="nav-text">分析结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
