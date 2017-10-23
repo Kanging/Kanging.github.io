@@ -114,7 +114,7 @@
 <meta property="og:description" content="概述最近看了一篇名叫《我分析了42万字歌词，就为了搞清楚民谣歌手在唱些什么》的文章，一程序员利用爬虫技术爬到大约42万字的民谣歌曲的歌词，再分词解析出每个词出现的频率，最后分析得出民谣歌手的情绪，喜爱的城市、季节等等，用数据来说话，比一句“我觉得”来的更有说服力。这对于酷爱听歌的我来说显得十分的有趣。刚好今天有空，我也尝试分析一下大词作家林夕先生的歌词里到底写了些什么。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://p4.music.126.net/EoEKzvb4LcJ6DzInb5fTng==/921390744102043.jpg?param=640y300">
-<meta property="og:updated_time" content="2017-10-23T00:35:35.593Z">
+<meta property="og:updated_time" content="2017-10-23T01:11:29.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大数据分析林夕的歌词">
 <meta name="twitter:description" content="概述最近看了一篇名叫《我分析了42万字歌词，就为了搞清楚民谣歌手在唱些什么》的文章，一程序员利用爬虫技术爬到大约42万字的民谣歌曲的歌词，再分词解析出每个词出现的频率，最后分析得出民谣歌手的情绪，喜爱的城市、季节等等，用数据来说话，比一句“我觉得”来的更有说服力。这对于酷爱听歌的我来说显得十分的有趣。刚好今天有空，我也尝试分析一下大词作家林夕先生的歌词里到底写了些什么。">
@@ -393,7 +393,7 @@
           
             <div class="post-gallery-row">
               <a class="post-gallery-img fancybox"
-                 href="http://p4.music.126.net/EoEKzvb4LcJ6DzInb5fTng==/921390744102043.jpg?param=640y300" rel="gallery_cj93ggbji000a68r8cqa6nwk2"
+                 href="http://p4.music.126.net/EoEKzvb4LcJ6DzInb5fTng==/921390744102043.jpg?param=640y300" rel="gallery_cj93r80e5000d1kr8t8j6fd8a"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="http://p4.music.126.net/EoEKzvb4LcJ6DzInb5fTng==/921390744102043.jpg?param=640y300" itemprop="contentUrl"/>
               </a>
@@ -408,9 +408,10 @@
       
         <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>最近看了一篇名叫《我分析了42万字歌词，就为了搞清楚民谣歌手在唱些什么》的文章，一程序员利用爬虫技术爬到大约42万字的民谣歌曲的歌词，再分词解析出每个词出现的频率，最后分析得出民谣歌手的情绪，喜爱的城市、季节等等，用数据来说话，比一句“我觉得”来的更有说服力。这对于酷爱听歌的我来说显得十分的有趣。刚好今天有空，我也尝试分析一下大词作家林夕先生的歌词里到底写了些什么。</p>
 <a id="more"></a>
-<h1 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h1><p><img src="http://img.blog.csdn.net/20170529151633946" width="”300”" height="”180”"><br><img src="http://img.blog.csdn.net/20170529151651618" width="”300”" height="”180”"><br>程序我是用Java语言写的，其中核心的部分就是分词，也是一个小难点，再统计一下每个元素（每个词）出现的频率，将结果输出到Excel中，再作出分析图。<br> 上网搜了一下，不看不知道，着实吓了我一跳，林夕填过的歌词竟然有2500多首，合起来有60多万字（我连写800字的作文都困难⊙﹏⊙b汗）！注意，这里每首歌歌词都是是不含第二节部分!<br> <img src="http://img.blog.csdn.net/20170529133540274" width="”90”" height="”160”"></p>
+<h1 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h1><p><img src="http://img.blog.csdn.net/20170529151633946" width="”300”" height="”180”"><br><img src="http://img.blog.csdn.net/20170529151651618" width="”300”" height="”180”"><br>程序我是用Java语言写的，十分简单！其中核心的部分就是分词，也是一个小难点，再统计一下每个元素（每个词）出现的频率，将结果写入到Excel中，再作出分析图。对于做ERP系统的哥们来讲应该不难，因为涉及到输出报表的模块。<br> 上网搜了一下，不看不知道，着实吓了我一跳，林夕填过的歌词竟然有2500多首，合起来有60多万字（我连写800字的作文都困难⊙﹏⊙b汗）！注意，这里每首歌歌词都是是不含第二节部分!<br> <img src="http://img.blog.csdn.net/20170529133540274" width="”90”" height="”160”"></p>
 <h1 id="分析结果"><a href="#分析结果" class="headerlink" title="分析结果"></a>分析结果</h1><p><img src="http://img.blog.csdn.net/20170529133551146" width="”180”" height="”180”"><br>总体来说歌词还是以写男女之间的情爱为主，可以看出除开词作者介绍，出现最多的三个词是“没有”，“一个”和“爱”。<br><img src="http://img.blog.csdn.net/20170529153401125" width="”300”" height="”500”"> 林夕歌词的正面情绪大于负面情绪，乐观大于悲观。可以回忆一下，平时听这些歌是不是能给你更多得溫暖跟鼓舞，这其中“爱”字出现了7083次，也是出现最多的一个汉字，并且“love”也是出现最多的单词。不过往往决定一首歌情感的往往是编曲。<br><img src="http://img.blog.csdn.net/20170529143826411" width="”90”" height="”180”"><br>林夕写了2000多首歌词，跟王菲合作的次数最多，有95首歌由王菲来演唱。第二名竟然是谢霆锋。。。可以可以。<br><img src="http://img.blog.csdn.net/20170529150126971" width="”300”" height="”180”"><br><img src="http://img.blog.csdn.net/20170529150207923" width="”300”" height="”180”"> 如果说一个人作品能说明一个人的性格和喜好的话，那么林夕先生最喜欢的颜色是黑色（167），最爱穿的衣服是毛衣（12），最喜欢的花是玫瑰（51），最喜欢的成语是人山人海（59）和地老天荒（37），跟母亲（84）的关系比跟父亲（67）的关系好。描写男人（523）比女人（267）多了近一倍。歌词中写今天有317次，明天有119次，昨天有60次。可以看出林夕更珍惜当下，并憧憬未来。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这次数据分析异常的简单，所有东西做下来花了大概三个小时的时间，纯粹是想尝试一下数据分析的感觉。林夕给我的感觉是他非常的内敛，沉稳和低调。很多流行的情歌多以伤感、悲痛等暗色系为主题，但林夕歌词里却存在大量的美好事物，如爱（871）、拥抱（376）、幸福（286）等等，是个内向的暖男。我最喜欢他填写的一首词是《钟无艳》，能让人切实的知道这首歌表达的是什么，搭配上粤语的吐字发音，确实让人惊艳。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p></p><p>这次数据分析异常的简单，所有东西做下来花了大概三个小时的时间，纯粹是好玩，想尝试一下数据分析的感觉。网上还有这样一遍叫<a href="http://baijiahao.baidu.com/s?id=1580885708951290960&amp;wfr=spider&amp;for=pc" title="大数据分析帮你进一步认识苏轼" target="_blank" rel="external">《大数据分析帮你进一步认识苏轼》</a>，我感觉挺有意思的，据说是几个小学生做的数据分析，长江后浪推。。。</p><p></p>
+<p></p><p>林夕给我的感觉是他非常的内敛，沉稳和低调。很多流行的情歌多以伤感、悲痛等暗色系为主题，但林夕歌词里却存在大量的美好事物，如爱（871）、拥抱（376）、幸福（286）等等，是个内向的暖男。我最喜欢他填写的一首词是《钟无艳》，能让人切实的知道这首歌表达的是什么，搭配上粤语的吐字发音，确实让人惊艳。</p><p></p>
 <p></p><p><br></p><br>最后，让我们来感受一下<p></p>
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=308353&auto=0&height=66"></iframe>
 
@@ -482,8 +483,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/01/01/introduce/" rel="prev" title="置顶说明">
-                置顶说明 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/28/自定义控件——bezier曲线的使用/" rel="prev" title="自定义控件——bezier曲线的使用">
+                自定义控件——bezier曲线的使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -565,7 +566,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -587,7 +588,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

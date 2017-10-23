@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,自定义控件," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述今天我们尝试用贝瑟尔曲线自定义一个控件，效果如下：">
+<meta name="keywords" content="Android,自定义控件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义控件——bezier曲线的使用">
+<meta property="og:url" content="http://Kanging.github.io/2017/09/28/自定义控件——bezier曲线的使用/index.html">
+<meta property="og:site_name" content="周康的博客">
+<meta property="og:description" content="概述今天我们尝试用贝瑟尔曲线自定义一个控件，效果如下：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://htmljs.b0.upaiyun.com/uploads/1415845756871-complex-bezier-curve.gif">
+<meta property="og:updated_time" content="2017-10-23T05:38:53.238Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义控件——bezier曲线的使用">
+<meta name="twitter:description" content="概述今天我们尝试用贝瑟尔曲线自定义一个控件，效果如下：">
+<meta name="twitter:image" content="http://htmljs.b0.upaiyun.com/uploads/1415845756871-complex-bezier-curve.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://Kanging.github.io/2017/09/28/自定义控件——bezier曲线的使用/"/>
+
+
+
+
+
+  <title>自定义控件——bezier曲线的使用 | 周康的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">周康的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一蓑烟雨任平生</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/aboutme/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            简历
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2017/09/28/自定义控件——bezier曲线的使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="周  康">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周康的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自定义控件——bezier曲线的使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-28T10:12:45+08:00">
+                2017-09-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="http://htmljs.b0.upaiyun.com/uploads/1415845756871-complex-bezier-curve.gif" rel="gallery_cj93r80e3000a1kr8czq68k6l"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="http://htmljs.b0.upaiyun.com/uploads/1415845756871-complex-bezier-curve.gif" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>今天我们尝试用贝瑟尔曲线自定义一个控件，效果如下：<br><a id="more"></a><br><img src="http://oxr4g4c3v.bkt.clouddn.com/view1.gif" alt="Alt text"><br>是不是有种似曾相识的感觉，没错啦，就是QQ消息拖拽的效果。<br>如果还有人不太了解贝瑟尔曲线，可以<a href="http://www.html-js.com/article/1628" target="_blank" rel="external">拼命戳我</a>,里面介绍的很详细。</p>
+<h1 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h1><p>首先看下这个图：<br><img src="http://oxr4g4c3v.bkt.clouddn.com/4314397-6bf61168a6f82fc2.png" width="”180”" height="”180”"></p>
+<p></p><p>可以看出这里涉及到一些三角函数方面的数学知识，我们都可以用代码的形式把它表述出来。以下：</p><br>1.先有一个拖动大圆c1的圆心，和一个固定小圆c0圆心。我点击屏幕的地方就是两个圆的圆心，获取圆心：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">       <span class="keyword">switch</span> (event.getAction())&#123;</div><div class="line"></div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_DOWN:</div><div class="line">               iniPoint(event.getX(),event.getY());<span class="comment">//获取圆心</span></div><div class="line"></div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_MOVE:</div><div class="line">               upPoint(event.getX(),event.getY());<span class="comment">//移动的时候拖动圆一直在动，固定圆不动</span></div><div class="line">               <span class="keyword">break</span>;</div><div class="line"></div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">               <span class="keyword">break</span>;</div><div class="line"></div><div class="line">       &#125;</div><div class="line"></div><div class="line">       invalidate();</div><div class="line"></div><div class="line">       <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">   &#125;</div><div class="line"> <span class="comment">/**</span></div><div class="line"><span class="comment">    * 按下便初始化该点</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> x</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> y</span></div><div class="line"><span class="comment">    */</span></div><div class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">iniPoint</span><span class="params">(<span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;</div><div class="line">       PressPoint = <span class="keyword">new</span> PointF(x,y);</div><div class="line">       unPressPoint = <span class="keyword">new</span> PointF(x,y);</div><div class="line">   &#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment">    * 移动该点</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> x</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> y</span></div><div class="line"><span class="comment">    */</span></div><div class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">upPoint</span><span class="params">(<span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;<span class="comment">//移动的时候拖动圆一直在动，固定圆不动</span></div><div class="line">       PressPoint.x = x;</div><div class="line">       PressPoint.y = y;</div><div class="line">   &#125;</div></pre></td></tr></table></figure><p></p>
+<p>2.拖拽大圆的半径不变的，我们可以写死，不动小圆的半径时根据两圆心的距离的变化而变化的，然后在onDrew()方法里绘制这两个圆<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(PressPoint==<span class="keyword">null</span>&amp;&amp;unPressPoint==<span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">//绘制拖拽圆</span></div><div class="line">        canvas.drawCircle(PressPoint.x,PressPoint.y,mPressRadius,mPaint);<span class="comment">//mPressRadius是写死的常量</span></div><div class="line"></div><div class="line">        <span class="comment">//计算两圆心c1和c0的距离，在坐标系中计算两个点的距离，公式是x的平方加上y的平方之和，然后开根号，表达式如下：</span></div><div class="line">        <span class="keyword">int</span> distence = (<span class="keyword">int</span>) Math.sqrt((PressPoint.x-unPressPoint.x)*(PressPoint.x-unPressPoint.x)+(PressPoint.y-unPressPoint.y)*(PressPoint.y-unPressPoint.y));</div><div class="line">		<span class="comment">//固定小圆的半径变化形式，两圆越远，小圆半径越小</span></div><div class="line">        mUnPressRadius = MIX_UNPRESSRADIUS-distence/<span class="number">20</span>;</div><div class="line">		</div><div class="line">        Path bazier = getBazierPath();<span class="comment">//路径</span></div><div class="line"></div><div class="line">        <span class="comment">//绘制固定圆和贝瑟尔曲线</span></div><div class="line">        <span class="keyword">if</span>(bazier!=<span class="keyword">null</span>)&#123;</div><div class="line">            canvas.drawCircle(unPressPoint.x,unPressPoint.y,mUnPressRadius,mPaint);<span class="comment">//固定小圆</span></div><div class="line"></div><div class="line">            canvas.drawPath(bazier,mPaint);<span class="comment">//曲线</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>3.接下来最重要的一点是获取四个点（p0,p1,p2,p3）的坐标,先求出a的角度，小圆半径有了，然后就能得到x，y的值了，我们知道x，y和角度a的关系是：tan a = x/y。</p>
+<p>求a<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//角度a，对着图来看这个公式</span></div><div class="line"><span class="keyword">float</span> a = (<span class="keyword">float</span>) Math.atan((PressPoint.y-unPressPoint.y)/(PressPoint.x-unPressPoint.x));</div><div class="line"></div><div class="line"><span class="comment">//x = mUnPressRadius*Math.sin(a),半径乘以sin(a)</span></div><div class="line"><span class="comment">//y = mUnPressRadius*Math.cos(a)</span></div></pre></td></tr></table></figure></p>
+<p>求p0(x,y)，这里需要注意一下的是，屏幕的坐标系x轴向右是正方向，但是y轴的是向下才是正的。所以，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">p0x = c0x+x</div><div class="line">p0y = c0y-y</div></pre></td></tr></table></figure></p>
+<p>同理我们就能求出p1,p2,p3点了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//四个点的位置</span></div><div class="line">      <span class="keyword">float</span> p0x = (<span class="keyword">float</span>) (mUnPressRadius*Math.sin(a)+unPressPoint.x);</div><div class="line">      <span class="keyword">float</span> p0y = (<span class="keyword">float</span>) (unPressPoint.y-mUnPressRadius*Math.cos(a));</div><div class="line"></div><div class="line">      <span class="keyword">float</span> p1x = (<span class="keyword">float</span>) (mPressRadius*Math.sin(a)+PressPoint.x);</div><div class="line">      <span class="keyword">float</span> p1y = (<span class="keyword">float</span>) (PressPoint.y-mPressRadius*Math.cos(a));</div><div class="line"></div><div class="line">      <span class="keyword">float</span> p2x = (<span class="keyword">float</span>) (PressPoint.x-mPressRadius*Math.sin(a));</div><div class="line">      <span class="keyword">float</span> p2y = (<span class="keyword">float</span>) (PressPoint.y+mPressRadius*Math.cos(a));</div><div class="line"></div><div class="line"></div><div class="line">      <span class="keyword">float</span> p3x = (<span class="keyword">float</span>) (unPressPoint.x-mUnPressRadius*Math.sin(a));</div><div class="line">      <span class="keyword">float</span> p3y = (<span class="keyword">float</span>) (unPressPoint.y+mUnPressRadius*Math.cos(a));</div></pre></td></tr></table></figure></p>
+<p>4.控制点<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//获取控制点，取两个圆心的中点为控制点</span></div><div class="line">PointF contrlPoint = <span class="keyword">new</span> PointF((PressPoint.x+unPressPoint.x)/<span class="number">2</span>,(PressPoint.y+unPressPoint.y)/<span class="number">2</span>);</div></pre></td></tr></table></figure></p>
+<p>5.所有东西都准备好就可以把路径画出来了，就是把p0,p1,p2,p3围起来。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">bazier.moveTo(p0x,p0y);<span class="comment">//移动到p0点</span></div><div class="line"></div><div class="line">      bazier.quadTo(contrlPoint.x,contrlPoint.y,p1x,p1y);<span class="comment">//曲线路径</span></div><div class="line"></div><div class="line">      bazier.lineTo(p2x,p2y);</div><div class="line"></div><div class="line">      bazier.quadTo(contrlPoint.x,contrlPoint.y,p3x,p3y);</div></pre></td></tr></table></figure></p>
+<p>6.最后我们在布局文件中使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</div><div class="line">   xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;</div><div class="line">   xmlns:tools=&quot;http://schemas.android.com/tools&quot;</div><div class="line">   android:id=&quot;@+id/activity_main&quot;</div><div class="line">   android:orientation=&quot;vertical&quot;</div><div class="line">   android:layout_width=&quot;match_parent&quot;</div><div class="line">   android:layout_height=&quot;match_parent&quot;</div><div class="line">   tools:context=&quot;acase.zhoukang.com.studydemo.MainActivity&quot;&gt;</div><div class="line"></div><div class="line">&lt;acase.zhoukang.com.studydemo.view.BezierView</div><div class="line">       android:layout_width=&quot;match_parent&quot;</div><div class="line">       android:layout_height=&quot;match_parent&quot; /&gt;</div><div class="line"></div><div class="line">&lt;/RelativeLayout&gt;</div></pre></td></tr></table></figure></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>关键点是在于求p0，p1，p2，p3四个点的位置，<a href="https://github.com/Kanging/StudyDemo/blob/master/app/src/main/java/acase/zhoukang/com/studydemo/view/BezierView.java" target="_blank" rel="external">源码戳我</a></p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+	
+	<div>
+  
+    
+<div style="text-align:center;color: #ccc;font-size:14px;">
+------ 本文结束 ------</div>
+<br/>
+<div style="border: 1px solid black">
+<div style="margin-left:10px">
+
+<span style="font-weight:blod">版权声明</span>
+<img src="http://kuangqi.me/images/cc.png" >
+<br/>
+<link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>文章作者: </span><a href="/" title="访问 周  康 的个人博客">周  康</a></p>
+  <p><span>发布时间: </span>2017年09月28日 - 10:09</p>
+  <p><span>原始链接: </span><a href="/2017/09/28/自定义控件——bezier曲线的使用/" title="自定义控件——bezier曲线的使用">http://Kanging.github.io/2017/09/28/自定义控件——bezier曲线的使用/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://Kanging.github.io/2017/09/28/自定义控件——bezier曲线的使用/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议: </span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+</div>
+
+  
+</div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/自定义控件/" rel="tag"># 自定义控件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/16/大数据分析林夕的歌词/" rel="next" title="大数据分析林夕的歌词">
+                <i class="fa fa-chevron-left"></i> 大数据分析林夕的歌词
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/01/introduce/" rel="prev" title="置顶说明">
+                置顶说明 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537"
+                alt="周  康" />
+            
+              <p class="site-author-name" itemprop="name">周  康</p>
+              <p class="site-description motion-element" itemprop="description">爱学习的好孩子</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="799310042@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/zhouklang" target="_blank" title="新浪微博">
+                    
+                      <i class="fa fa-fw fa-globe"></i>新浪微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:周康?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#具体实现："><span class="nav-number">2.</span> <span class="nav-text">具体实现：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">周  康</span>
+
+  
+</div>
+
+
+  <!-- <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div> 
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div> -->
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
