@@ -114,7 +114,7 @@
 <meta property="og:description" content="概述今天我们尝试用贝瑟尔曲线自定义一个控件，效果如下：">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://htmljs.b0.upaiyun.com/uploads/1415845756871-complex-bezier-curve.gif">
-<meta property="og:updated_time" content="2017-10-23T05:38:53.238Z">
+<meta property="og:updated_time" content="2017-10-25T06:47:06.487Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自定义控件——bezier曲线的使用">
 <meta name="twitter:description" content="概述今天我们尝试用贝瑟尔曲线自定义一个控件，效果如下：">
@@ -304,7 +304,7 @@
     <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2017/09/28/自定义控件——bezier曲线的使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="周  康">
+      <meta itemprop="name" content="周 康">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537">
     </span>
@@ -393,7 +393,7 @@
           
             <div class="post-gallery-row">
               <a class="post-gallery-img fancybox"
-                 href="http://htmljs.b0.upaiyun.com/uploads/1415845756871-complex-bezier-curve.gif" rel="gallery_cj93r80e3000a1kr8czq68k6l"
+                 href="http://htmljs.b0.upaiyun.com/uploads/1415845756871-complex-bezier-curve.gif" rel="gallery_cj96oh2d5000egkr8myak5b7p"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="http://htmljs.b0.upaiyun.com/uploads/1415845756871-complex-bezier-curve.gif" itemprop="contentUrl"/>
               </a>
@@ -407,11 +407,11 @@
 
       
         <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>今天我们尝试用贝瑟尔曲线自定义一个控件，效果如下：<br><a id="more"></a><br><img src="http://oxr4g4c3v.bkt.clouddn.com/view1.gif" alt="Alt text"><br>是不是有种似曾相识的感觉，没错啦，就是QQ消息拖拽的效果。<br>如果还有人不太了解贝瑟尔曲线，可以<a href="http://www.html-js.com/article/1628" target="_blank" rel="external">拼命戳我</a>,里面介绍的很详细。</p>
-<h1 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h1><p>首先看下这个图：<br><img src="http://oxr4g4c3v.bkt.clouddn.com/4314397-6bf61168a6f82fc2.png" width="”180”" height="”180”"></p>
+<h1 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h1><p>首先看下这个图：<br><img src="http://oxr4g4c3v.bkt.clouddn.com/bezierAn.png" width="”180”" height="”180”"></p>
 <p></p><p>可以看出这里涉及到一些三角函数方面的数学知识，我们都可以用代码的形式把它表述出来。以下：</p><br>1.先有一个拖动大圆c1的圆心，和一个固定小圆c0圆心。我点击屏幕的地方就是两个圆的圆心，获取圆心：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">       <span class="keyword">switch</span> (event.getAction())&#123;</div><div class="line"></div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_DOWN:</div><div class="line">               iniPoint(event.getX(),event.getY());<span class="comment">//获取圆心</span></div><div class="line"></div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_MOVE:</div><div class="line">               upPoint(event.getX(),event.getY());<span class="comment">//移动的时候拖动圆一直在动，固定圆不动</span></div><div class="line">               <span class="keyword">break</span>;</div><div class="line"></div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">               <span class="keyword">break</span>;</div><div class="line"></div><div class="line">       &#125;</div><div class="line"></div><div class="line">       invalidate();</div><div class="line"></div><div class="line">       <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">   &#125;</div><div class="line"> <span class="comment">/**</span></div><div class="line"><span class="comment">    * 按下便初始化该点</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> x</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> y</span></div><div class="line"><span class="comment">    */</span></div><div class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">iniPoint</span><span class="params">(<span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;</div><div class="line">       PressPoint = <span class="keyword">new</span> PointF(x,y);</div><div class="line">       unPressPoint = <span class="keyword">new</span> PointF(x,y);</div><div class="line">   &#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment">    * 移动该点</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> x</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> y</span></div><div class="line"><span class="comment">    */</span></div><div class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">upPoint</span><span class="params">(<span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;<span class="comment">//移动的时候拖动圆一直在动，固定圆不动</span></div><div class="line">       PressPoint.x = x;</div><div class="line">       PressPoint.y = y;</div><div class="line">   &#125;</div></pre></td></tr></table></figure><p></p>
 <p>2.拖拽大圆的半径不变的，我们可以写死，不动小圆的半径时根据两圆心的距离的变化而变化的，然后在onDrew()方法里绘制这两个圆<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(PressPoint==<span class="keyword">null</span>&amp;&amp;unPressPoint==<span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">//绘制拖拽圆</span></div><div class="line">        canvas.drawCircle(PressPoint.x,PressPoint.y,mPressRadius,mPaint);<span class="comment">//mPressRadius是写死的常量</span></div><div class="line"></div><div class="line">        <span class="comment">//计算两圆心c1和c0的距离，在坐标系中计算两个点的距离，公式是x的平方加上y的平方之和，然后开根号，表达式如下：</span></div><div class="line">        <span class="keyword">int</span> distence = (<span class="keyword">int</span>) Math.sqrt((PressPoint.x-unPressPoint.x)*(PressPoint.x-unPressPoint.x)+(PressPoint.y-unPressPoint.y)*(PressPoint.y-unPressPoint.y));</div><div class="line">		<span class="comment">//固定小圆的半径变化形式，两圆越远，小圆半径越小</span></div><div class="line">        mUnPressRadius = MIX_UNPRESSRADIUS-distence/<span class="number">20</span>;</div><div class="line">		</div><div class="line">        Path bazier = getBazierPath();<span class="comment">//路径</span></div><div class="line"></div><div class="line">        <span class="comment">//绘制固定圆和贝瑟尔曲线</span></div><div class="line">        <span class="keyword">if</span>(bazier!=<span class="keyword">null</span>)&#123;</div><div class="line">            canvas.drawCircle(unPressPoint.x,unPressPoint.y,mUnPressRadius,mPaint);<span class="comment">//固定小圆</span></div><div class="line"></div><div class="line">            canvas.drawPath(bazier,mPaint);<span class="comment">//曲线</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
 <p>3.接下来最重要的一点是获取四个点（p0,p1,p2,p3）的坐标,先求出a的角度，小圆半径有了，然后就能得到x，y的值了，我们知道x，y和角度a的关系是：tan a = x/y。</p>
-<p>求a<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//角度a，对着图来看这个公式</span></div><div class="line"><span class="keyword">float</span> a = (<span class="keyword">float</span>) Math.atan((PressPoint.y-unPressPoint.y)/(PressPoint.x-unPressPoint.x));</div><div class="line"></div><div class="line"><span class="comment">//x = mUnPressRadius*Math.sin(a),半径乘以sin(a)</span></div><div class="line"><span class="comment">//y = mUnPressRadius*Math.cos(a)</span></div></pre></td></tr></table></figure></p>
+<p>求角度a<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//角度a，对着图来看这个公式</span></div><div class="line"><span class="keyword">float</span> a = (<span class="keyword">float</span>) Math.atan((PressPoint.y-unPressPoint.y)/(PressPoint.x-unPressPoint.x));</div><div class="line"></div><div class="line"><span class="comment">//x = mUnPressRadius*Math.sin(a),半径乘以sin(a)</span></div><div class="line"><span class="comment">//y = mUnPressRadius*Math.cos(a)</span></div></pre></td></tr></table></figure></p>
 <p>求p0(x,y)，这里需要注意一下的是，屏幕的坐标系x轴向右是正方向，但是y轴的是向下才是正的。所以，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">p0x = c0x+x</div><div class="line">p0y = c0y-y</div></pre></td></tr></table></figure></p>
 <p>同理我们就能求出p1,p2,p3点了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//四个点的位置</span></div><div class="line">      <span class="keyword">float</span> p0x = (<span class="keyword">float</span>) (mUnPressRadius*Math.sin(a)+unPressPoint.x);</div><div class="line">      <span class="keyword">float</span> p0y = (<span class="keyword">float</span>) (unPressPoint.y-mUnPressRadius*Math.cos(a));</div><div class="line"></div><div class="line">      <span class="keyword">float</span> p1x = (<span class="keyword">float</span>) (mPressRadius*Math.sin(a)+PressPoint.x);</div><div class="line">      <span class="keyword">float</span> p1y = (<span class="keyword">float</span>) (PressPoint.y-mPressRadius*Math.cos(a));</div><div class="line"></div><div class="line">      <span class="keyword">float</span> p2x = (<span class="keyword">float</span>) (PressPoint.x-mPressRadius*Math.sin(a));</div><div class="line">      <span class="keyword">float</span> p2y = (<span class="keyword">float</span>) (PressPoint.y+mPressRadius*Math.cos(a));</div><div class="line"></div><div class="line"></div><div class="line">      <span class="keyword">float</span> p3x = (<span class="keyword">float</span>) (unPressPoint.x-mUnPressRadius*Math.sin(a));</div><div class="line">      <span class="keyword">float</span> p3y = (<span class="keyword">float</span>) (unPressPoint.y+mUnPressRadius*Math.cos(a));</div></pre></td></tr></table></figure></p>
 <p>4.控制点<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//获取控制点，取两个圆心的中点为控制点</span></div><div class="line">PointF contrlPoint = <span class="keyword">new</span> PointF((PressPoint.x+unPressPoint.x)/<span class="number">2</span>,(PressPoint.y+unPressPoint.y)/<span class="number">2</span>);</div></pre></td></tr></table></figure></p>
@@ -445,7 +445,7 @@
 <img src="http://kuangqi.me/images/cc.png" >
 <br/>
 <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
-  <p><span>文章作者: </span><a href="/" title="访问 周  康 的个人博客">周  康</a></p>
+  <p><span>文章作者: </span><a href="/" title="访问 周 康 的个人博客">周 康</a></p>
   <p><span>发布时间: </span>2017年09月28日 - 10:09</p>
   <p><span>原始链接: </span><a href="/2017/09/28/自定义控件——bezier曲线的使用/" title="自定义控件——bezier曲线的使用">http://Kanging.github.io/2017/09/28/自定义控件——bezier曲线的使用/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://Kanging.github.io/2017/09/28/自定义控件——bezier曲线的使用/"  aria-label="复制成功！"></i></span>
@@ -556,9 +556,9 @@
             
               <img class="site-author-image" itemprop="image"
                 src="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537"
-                alt="周  康" />
+                alt="周 康" />
             
-              <p class="site-author-name" itemprop="name">周  康</p>
+              <p class="site-author-name" itemprop="name">周 康</p>
               <p class="site-description motion-element" itemprop="description">爱学习的好孩子</p>
           </div>
 
@@ -569,7 +569,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -670,7 +670,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">周  康</span>
+  <span class="author" itemprop="copyrightHolder">周 康</span>
 
   
 </div>
