@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,问题思考," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="提出问题现在这里列出几个问题，思考一下：  Handler的作用 为什么Android中要设计为只能在UI线程中去更新UI呢? 说说Handler、Looper MessageQueue之间的关系 主线程往子线程发消息 子线程中可以使用Handler吗？ 可以在非主线程中更新UI吗？">
+<meta name="keywords" content="Android,问题思考">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于Handle的几个问题">
+<meta property="og:url" content="http://Kanging.github.io/2017/09/16/关于Handle的几个问题/index.html">
+<meta property="og:site_name" content="周康的博客">
+<meta property="og:description" content="提出问题现在这里列出几个问题，思考一下：  Handler的作用 为什么Android中要设计为只能在UI线程中去更新UI呢? 说说Handler、Looper MessageQueue之间的关系 主线程往子线程发消息 子线程中可以使用Handler吗？ 可以在非主线程中更新UI吗？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oxr4g4c3v.bkt.clouddn.com/%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92.png">
+<meta property="og:updated_time" content="2017-11-02T07:41:43.556Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于Handle的几个问题">
+<meta name="twitter:description" content="提出问题现在这里列出几个问题，思考一下：  Handler的作用 为什么Android中要设计为只能在UI线程中去更新UI呢? 说说Handler、Looper MessageQueue之间的关系 主线程往子线程发消息 子线程中可以使用Handler吗？ 可以在非主线程中更新UI吗？">
+<meta name="twitter:image" content="http://oxr4g4c3v.bkt.clouddn.com/%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://Kanging.github.io/2017/09/16/关于Handle的几个问题/"/>
+
+
+
+
+
+  <title>关于Handle的几个问题 | 周康的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">周康的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一蓑烟雨任平生</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/aboutme/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            简历
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2017/09/16/关于Handle的几个问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="周 康">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周康的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于Handle的几个问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T00:00:00+08:00">
+                2017-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="提出问题"><a href="#提出问题" class="headerlink" title="提出问题"></a>提出问题</h1><p>现在这里列出几个问题，思考一下：</p>
+<ol>
+<li>Handler的作用</li>
+<li>为什么Android中要设计为只能在UI线程中去更新UI呢?</li>
+<li>说说Handler、Looper MessageQueue之间的关系</li>
+<li>主线程往子线程发消息</li>
+<li>子线程中可以使用Handler吗？</li>
+<li>可以在非主线程中更新UI吗？<a id="more"></a>
+</li>
+</ol>
+<h1 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h1><p>以上几个问题如果都能回答的上来，说明关于Handle你已经基本掌握了，如果还有点模糊的话可以先看下以下两篇文章：</p>
+<ul>
+<li><a href="/2017/03/21/Android消息处理机制/" title="Android消息处理机制">Android消息处理机制</a></li>
+<li><a href="/2016/09/15/View的绘制流程/" title="View的绘制流程">View的绘制流程</a>
+</li>
+</ul>
+<p>ok，现在先看第一个问题：</p>
+<h3 id="Handler的作用"><a href="#Handler的作用" class="headerlink" title="Handler的作用"></a>Handler的作用</h3><ul>
+<li>接收消息：在非UI线程中完成耗时操作，在UI线程中去更新UI。</li>
+<li>发送消息：可以在主线程中发送延时消息。</li>
+</ul>
+<h3 id="为什么Android中要设计为只能在UI线程中去更新UI呢"><a href="#为什么Android中要设计为只能在UI线程中去更新UI呢" class="headerlink" title="为什么Android中要设计为只能在UI线程中去更新UI呢?"></a>为什么Android中要设计为只能在UI线程中去更新UI呢?</h3><ul>
+<li><p>从源码的角度来回答：<br>我们知道既然是要更新UI,那么一定会涉及到View的绘制，既然要绘制View，那么一定会调用ViewRootImpl.class中的performTraversals()方法，requestLayout()方法，里面都会调用checkThread();里面就对当前是否是主线程进行判断。如果不是主线程，就会抛异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestLayout</span><span class="params">()</span> </span>&#123;<span class="comment">//我们在自定义ViewGroup的时候，如果要更新布局就会调用这个方法刷新界面，其实就是调用了View的重新绘制流程。</span></div><div class="line">   <span class="keyword">if</span> (!mHandlingLayoutInLayoutRequest) &#123;</div><div class="line">       checkThread();</div><div class="line">       mLayoutRequested = <span class="keyword">true</span>;</div><div class="line">       scheduleTraversals();</div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">checkThread</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (mThread != Thread.currentThread()) &#123;<span class="comment">//非主线程抛异常</span></div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> CalledFromWrongThreadException(</div><div class="line">                    <span class="string">"Only the original thread that created a view hierarchy can touch its views."</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>从设计思想的角度来回答：</p>
+</li>
+</ul>
+<ol>
+<li>解决多线程并发问题（根本原因）<br>在子线程中加锁也可以解决并发的问题，可是会造成UI卡顿的新问题，性能低下，所以不能加锁。</li>
+<li>提高界面更新的性能问题</li>
+<li>架构设计的简单</li>
+</ol>
+<h3 id="说说Handler、Looper-MessageQueue之间的关系"><a href="#说说Handler、Looper-MessageQueue之间的关系" class="headerlink" title="说说Handler、Looper MessageQueue之间的关系"></a>说说Handler、Looper MessageQueue之间的关系</h3><p><img src="http://oxr4g4c3v.bkt.clouddn.com/%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92.png" width="”300”" height="”300”"><br>这里的话我举个例子来回答：在一个流水线生产车间中，整个大的机器就是Looper（一直在工作状态），而传送带就是MessageQueue，有货物（Massage）时，就会一直传送（Loop循环），机器处理这些货物（Massage）。没有货物（Massage）时就机器就关闭（主线程进入休眠状态），因为节省成本要省电（释放CPU资源），而工人（Handle）负责把货物（Massage）放到传送带上（Handler.sendMessage(Message)）。<br>这个例子不知道贴不贴切。。。</p>
+<h3 id="主线程往子线程发消息"><a href="#主线程往子线程发消息" class="headerlink" title="主线程往子线程发消息"></a>主线程往子线程发消息</h3><p>我们用的最多的就是子线程向主线程发送消息，那如何让主线程给子线程发送消息呢？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> <span class="keyword">implements</span> <span class="title">OnClickListener</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UPDATE_TEXT = <span class="number">1</span>;</div><div class="line">    <span class="keyword">private</span> TextView tv;</div><div class="line">    <span class="keyword">private</span> Button btn;</div><div class="line">    <span class="keyword">private</span> Handler handler;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        tv = (TextView) findViewById(R.id.tv);</div><div class="line">        btn = (Button) findViewById(R.id.btn);</div><div class="line">        btn.setOnClickListener(<span class="keyword">this</span>);</div><div class="line">		<span class="comment">//固定写法</span></div><div class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                <span class="comment">//1、准备Looper对象</span></div><div class="line">                Looper.prepare();</div><div class="line">                <span class="comment">//2、在子线程中创建Handler</span></div><div class="line">                handler = <span class="keyword">new</span> Handler() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">                        <span class="keyword">super</span>.handleMessage(msg);</div><div class="line">                        Log.i(<span class="string">"当前线程2"</span>, Thread.currentThread().getName());</div><div class="line">                    &#125;</div><div class="line">                &#125;;</div><div class="line">                <span class="comment">//3、调用Looper的loop()方法，取出消息对象</span></div><div class="line">                Looper.loop();</div><div class="line">            &#125;</div><div class="line">        &#125;).start();</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">        Log.i(<span class="string">"当前线程1"</span>, Thread.currentThread().getName());</div><div class="line">        <span class="keyword">switch</span> (v.getId()) &#123;</div><div class="line">            <span class="keyword">case</span> R.id.btn:</div><div class="line">                Message msg = handler.obtainMessage();</div><div class="line">                handler.sendMessage(msg);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line"></div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>由此可见可以在子线程中创建使用Handle的，但是以下写法是不对的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        tv = (TextView) findViewById(R.id.tv);</div><div class="line"></div><div class="line">        <span class="comment">//尝试在子线程中去创建Handler</span></div><div class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                <span class="keyword">new</span> Handler();</div><div class="line">            &#125;</div><div class="line">        &#125;).start();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>Handle.class:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mLooper = Looper.myLooper();</div><div class="line">       <span class="keyword">if</span> (mLooper == <span class="keyword">null</span>) &#123;</div><div class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</div><div class="line">               <span class="string">"Can't create handler inside thread that has not called Looper.prepare()"</span>);</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<p>以上会有 “Can’t create handler inside thread that has not called Looper.prepare()”的错误。<br>所以要在子线程中创建Handle的话必须要执行Looper的prepare()方法，生成Looper对象，把Looper对象和当前线程对象形成键值对（线程为键），存放在ThreadLocal当中，然后生成handler对象，调用Looper的myLooper()方法，mLooper就不会为null了，得到与Handler所对应的Looper对象。handler、looper 、消息队列就形成了一一对应的关系</p>
+<h3 id="可以在非主线程中更新UI吗？"><a href="#可以在非主线程中更新UI吗？" class="headerlink" title="可以在非主线程中更新UI吗？"></a>可以在非主线程中更新UI吗？</h3><p>可以吗？答案是可以的。要从源码的角度来分析就很好理解。<br>还是说回View的绘制吧，刚刚也说了View的绘制肯定会调用CheckThread()方法，不是主线程的话肯定会执行不下去的。那好，我们想想，当我们开启一个Activiy的时候，在哪个生命周期方法中开始View的绘制的，是在onCreate()吗？我们看了源码就会知道是在onRsume()中才开始绘制View的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// H();</span></div><div class="line"> <span class="keyword">case</span> RESUME_ACTIVITY:<span class="comment">//Acticity生命周期Resume</span></div><div class="line">     Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, <span class="string">"activityResume"</span>);</div><div class="line">     SomeArgs args = (SomeArgs) msg.obj;</div><div class="line">     handleResumeActivity((IBinder) args.arg1, <span class="keyword">true</span>, args.argi1 != <span class="number">0</span>, <span class="keyword">true</span>,</div><div class="line">             args.argi3, <span class="string">"RESUME_ACTIVITY"</span>);</div><div class="line">     Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</div><div class="line">     <span class="keyword">break</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">handleResumeActivity</span><span class="params">(IBinder token, <span class="keyword">boolean</span> clearHide, <span class="keyword">boolean</span> isForward, <span class="keyword">boolean</span> reallyResume, <span class="keyword">int</span> seq, String reason)</span> </span>&#123;</div><div class="line">    <span class="comment">// 调用onResume方法</span></div><div class="line">    r = performResumeActivity(token, clearHide, reason);</div><div class="line">    <span class="comment">// 将decorView添加到屏幕中</span></div><div class="line">    View decor = r.window.getDecorView();</div><div class="line">    decor.setVisibility(View.INVISIBLE);</div><div class="line">    ViewManager wm = a.getWindowManager();</div><div class="line">    WindowManager.LayoutParams l = r.window.getAttributes();</div><div class="line">    a.mDecor = decor;</div><div class="line">	<span class="comment">//wm其实就是WindowManagerImpl，而在WindowManagerImpl中又调用了WindowManagerGlobal的addView方法。</span></div><div class="line">	<span class="comment">//将DecorView添加到Window中</span></div><div class="line">    wm.addView(decor, l);<span class="comment">//调用AddView，开始View的绘制</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>所以，我们只要在onResume方法之前，比如说在onCreate方法中：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">       <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">       setContentView(R.layout.activity_main);</div><div class="line">       tv = (TextView) <span class="keyword">this</span>.findViewById(R.id.startBtn);</div><div class="line">           <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">               <span class="meta">@Override</span></div><div class="line">               <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">               tv.setText(<span class="string">"子线程更细UI"</span>);</div><div class="line">           &#125;</div><div class="line">       &#125;).start();</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>以上代码可直接运行。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+	
+	<div>
+  
+    
+<div style="text-align:center;color: #ccc;font-size:14px;">
+------ 本文结束 ------</div>
+<br/>
+<div style="border: 1px solid black">
+<div style="margin-left:10px">
+
+<span style="font-weight:blod">版权声明</span>
+<img src="http://kuangqi.me/images/cc.png" >
+<br/>
+<link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>文章作者: </span><a href="/" title="访问 周 康 的个人博客">周 康</a></p>
+  <p><span>发布时间: </span>2017年09月16日 - 00:09</p>
+  <p><span>原始链接: </span><a href="/2017/09/16/关于Handle的几个问题/" title="关于Handle的几个问题">http://Kanging.github.io/2017/09/16/关于Handle的几个问题/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://Kanging.github.io/2017/09/16/关于Handle的几个问题/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议: </span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+</div>
+
+  
+</div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/问题思考/" rel="tag"># 问题思考</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/21/Android消息处理机制/" rel="next" title="Android消息处理机制">
+                <i class="fa fa-chevron-left"></i> Android消息处理机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/16/大数据分析林夕的歌词/" rel="prev" title="大数据分析林夕的歌词">
+                大数据分析林夕的歌词 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537"
+                alt="周 康" />
+            
+              <p class="site-author-name" itemprop="name">周 康</p>
+              <p class="site-description motion-element" itemprop="description">爱学习的好孩子</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="799310042@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/zhouklang" target="_blank" title="新浪微博">
+                    
+                      <i class="fa fa-fw fa-globe"></i>新浪微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:周康?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#提出问题"><span class="nav-number">1.</span> <span class="nav-text">提出问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Handler的作用"><span class="nav-number">2.0.1.</span> <span class="nav-text">Handler的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么Android中要设计为只能在UI线程中去更新UI呢"><span class="nav-number">2.0.2.</span> <span class="nav-text">为什么Android中要设计为只能在UI线程中去更新UI呢?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说说Handler、Looper-MessageQueue之间的关系"><span class="nav-number">2.0.3.</span> <span class="nav-text">说说Handler、Looper MessageQueue之间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主线程往子线程发消息"><span class="nav-number">2.0.4.</span> <span class="nav-text">主线程往子线程发消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可以在非主线程中更新UI吗？"><span class="nav-number">2.0.5.</span> <span class="nav-text">可以在非主线程中更新UI吗？</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">周 康</span>
+
+  
+</div>
+
+
+  <!-- <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div> 
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div> -->
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
