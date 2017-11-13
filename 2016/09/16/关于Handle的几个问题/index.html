@@ -105,19 +105,19 @@
 
 
 
-<meta name="description" content="提出问题现在这里列出几个问题，思考一下：  Handler的作用 为什么Android中要设计为只能在UI线程中去更新UI呢? 说说Handler、Looper MessageQueue之间的关系 主线程往子线程发消息 子线程中可以使用Handler吗？ 可以在非主线程中更新UI吗？">
+<meta name="description" content="提出问题现在这里列出几个问题，思考一下：  Handler的作用 为什么Android中要设计为只能在UI线程中去更新UI呢? 说说Handler、Looper MessageQueue之间的关系 主线程往子线程发消息 子线程中可以使用Handler吗？ 可以在非主线程中更新UI吗？ 使用Handle要注意什么（会引发什么问题）？">
 <meta name="keywords" content="Android,问题思考">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于Handle的几个问题">
 <meta property="og:url" content="http://Kanging.github.io/2016/09/16/关于Handle的几个问题/index.html">
 <meta property="og:site_name" content="周康的博客">
-<meta property="og:description" content="提出问题现在这里列出几个问题，思考一下：  Handler的作用 为什么Android中要设计为只能在UI线程中去更新UI呢? 说说Handler、Looper MessageQueue之间的关系 主线程往子线程发消息 子线程中可以使用Handler吗？ 可以在非主线程中更新UI吗？">
+<meta property="og:description" content="提出问题现在这里列出几个问题，思考一下：  Handler的作用 为什么Android中要设计为只能在UI线程中去更新UI呢? 说说Handler、Looper MessageQueue之间的关系 主线程往子线程发消息 子线程中可以使用Handler吗？ 可以在非主线程中更新UI吗？ 使用Handle要注意什么（会引发什么问题）？">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oxr4g4c3v.bkt.clouddn.com/%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92.png">
-<meta property="og:updated_time" content="2017-11-02T07:48:10.634Z">
+<meta property="og:updated_time" content="2017-11-13T07:55:20.906Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Handle的几个问题">
-<meta name="twitter:description" content="提出问题现在这里列出几个问题，思考一下：  Handler的作用 为什么Android中要设计为只能在UI线程中去更新UI呢? 说说Handler、Looper MessageQueue之间的关系 主线程往子线程发消息 子线程中可以使用Handler吗？ 可以在非主线程中更新UI吗？">
+<meta name="twitter:description" content="提出问题现在这里列出几个问题，思考一下：  Handler的作用 为什么Android中要设计为只能在UI线程中去更新UI呢? 说说Handler、Looper MessageQueue之间的关系 主线程往子线程发消息 子线程中可以使用Handler吗？ 可以在非主线程中更新UI吗？ 使用Handle要注意什么（会引发什么问题）？">
 <meta name="twitter:image" content="http://oxr4g4c3v.bkt.clouddn.com/%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92.png">
 
 
@@ -397,7 +397,8 @@
 <li>说说Handler、Looper MessageQueue之间的关系</li>
 <li>主线程往子线程发消息</li>
 <li>子线程中可以使用Handler吗？</li>
-<li>可以在非主线程中更新UI吗？<a id="more"></a>
+<li>可以在非主线程中更新UI吗？</li>
+<li>使用Handle要注意什么（会引发什么问题）？<a id="more"></a>
 </li>
 </ol>
 <h1 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h1><p>以上几个问题如果都能回答的上来，说明关于Handle你已经基本掌握了，如果还有点模糊的话可以先看下以下两篇文章：</p>
@@ -412,7 +413,7 @@
 <li>发送消息：可以在主线程中发送延时消息。</li>
 </ul>
 <h3 id="为什么Android中要设计为只能在UI线程中去更新UI呢"><a href="#为什么Android中要设计为只能在UI线程中去更新UI呢" class="headerlink" title="为什么Android中要设计为只能在UI线程中去更新UI呢?"></a>为什么Android中要设计为只能在UI线程中去更新UI呢?</h3><ul>
-<li><p>从源码的角度来回答：<br>我们知道既然是要更新UI,那么一定会涉及到View的绘制，既然要绘制View，那么一定会调用ViewRootImpl.class中的performTraversals()方法，requestLayout()方法，里面都会调用checkThread();里面就对当前是否是主线程进行判断。如果不是主线程，就会抛异常。</p>
+<li><p>从源码的角度来回答：<br>我们知道既然是要更新UI,那么一定会涉及到View的绘制，既然要绘制View，那么一定会调用ViewRootImpl. ()方法，requestLayout()方法，里面都会调用checkThread();里面就对当前是否是主线程进行判断。如果不是主线程，就会抛异常。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestLayout</span><span class="params">()</span> </span>&#123;<span class="comment">//我们在自定义ViewGroup的时候，如果要更新布局就会调用这个方法刷新界面，其实就是调用了View的重新绘制流程。</span></div><div class="line">   <span class="keyword">if</span> (!mHandlingLayoutInLayoutRequest) &#123;</div><div class="line">       checkThread();</div><div class="line">       mLayoutRequested = <span class="keyword">true</span>;</div><div class="line">       scheduleTraversals();</div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">checkThread</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (mThread != Thread.currentThread()) &#123;<span class="comment">//非主线程抛异常</span></div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> CalledFromWrongThreadException(</div><div class="line">                    <span class="string">"Only the original thread that created a view hierarchy can touch its views."</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 </li>
 <li><p>从设计思想的角度来回答：</p>
@@ -581,7 +582,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

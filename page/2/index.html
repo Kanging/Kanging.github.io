@@ -298,6 +298,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2016/03/25/ListView的优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="周 康">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周康的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/25/ListView的优化/" itemprop="url">：ListView的优化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-25T00:00:00+08:00">
+                2016-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>ListView是我最初学Android时最常用的几个控件之一了，那时候根本不知道什么是自定义View，什么是优化。后来看了别人写的代码才发现在getView里面还能有这样的操作呢！ListView的优化是我每次去面试必问的几道面试题之一。当然内容也很简单，今天不细讲，就大概汇总一下。</p>
+<h1 id="ListView的优化方案"><a href="#ListView的优化方案" class="headerlink" title="ListView的优化方案"></a>ListView的优化方案</h1><ol>
+<li><p>复用converView<br>目的不用每次都findViewbyid</p>
+</li>
+<li><p>定义静态内部类ViewHolder<br>为了避免对外部类（外部类很可能是Activity）对象的引用，那么最好将内部类声明为static的（非必须的）。</p>
+</li>
+<li><p>尽可能减少在getView中的逻辑判断</p>
+</li>
+<li><p>Item布局优化<br>减少布局镶嵌，减少背景覆盖（重复渲染）</p>
+</li>
+<li><p>滑动时停止加载图片</p>
+</li>
+<li><p>使用分页</p>
+</li>
+<li><p>数据类型考虑使用弱引用</p>
+</li>
+<li><p>缓存</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+	
+	<div>
+  
+</div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2016/01/19/okhttp+Rxjava+Retrofit完全封转，即拿即用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -392,7 +556,7 @@
           
             <div class="post-gallery-row">
               <a class="post-gallery-img fancybox"
-                 href="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=674083392,556296263&fm=27&gp=0.jpg" rel="gallery_cj9nyaw1300069or8h8ws38e9"
+                 href="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=674083392,556296263&fm=27&gp=0.jpg" rel="gallery_cj9xzst2g000j90r8n3tfarsf"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=674083392,556296263&fm=27&gp=0.jpg" itemprop="contentUrl"/>
               </a>
@@ -505,7 +669,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
