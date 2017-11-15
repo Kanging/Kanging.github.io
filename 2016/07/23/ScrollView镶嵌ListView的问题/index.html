@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述ScrollView内镶嵌ListView会出现显示不全（只显示一个Item）的问题，这里我们要回答具体原因和解决方案。">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ScrollView镶嵌ListView问题原因分析">
+<meta property="og:url" content="http://Kanging.github.io/2016/07/23/ScrollView镶嵌ListView的问题/index.html">
+<meta property="og:site_name" content="周康的博客">
+<meta property="og:description" content="概述ScrollView内镶嵌ListView会出现显示不全（只显示一个Item）的问题，这里我们要回答具体原因和解决方案。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-14T06:09:45.678Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ScrollView镶嵌ListView问题原因分析">
+<meta name="twitter:description" content="概述ScrollView内镶嵌ListView会出现显示不全（只显示一个Item）的问题，这里我们要回答具体原因和解决方案。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://Kanging.github.io/2016/07/23/ScrollView镶嵌ListView的问题/"/>
+
+
+
+
+
+  <title>ScrollView镶嵌ListView问题原因分析 | 周康的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">周康的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一蓑烟雨任平生</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/aboutme/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            简历
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2016/07/23/ScrollView镶嵌ListView的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="周 康">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周康的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ScrollView镶嵌ListView问题原因分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-23T00:00:00+08:00">
+                2016-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>ScrollView内镶嵌ListView会出现显示不全（只显示一个Item）的问题，这里我们要回答具体原因和解决方案。<br><a id="more"></a></p>
+<h1 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h1><p>先看关于测量View的几个参数：</p>
+<p>在ScrollView中添加ListView，那么ScrollView就是父View，ListView是子View。先看ScrollView的onMeasure()的源码：<br>ScrollView.class:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);<span class="comment">//先调用父类的onMeasure();</span></div><div class="line">        <span class="comment">//而ScrollView的父类是FrameLaout</span></div><div class="line">		</div><div class="line">		</div><div class="line">		<span class="comment">// ... ... </span></div><div class="line">        </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>父View：<br>FrameLaout.class :<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">        </div><div class="line">		<span class="comment">// ... ...</span></div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</div><div class="line">            <span class="keyword">final</span> View child = getChildAt(i);</div><div class="line">            <span class="keyword">if</span> (mMeasureAllChildren || child.getVisibility() != GONE) &#123;</div><div class="line">                measureChildWithMargins(child, widthMeasureSpec, <span class="number">0</span>, heightMeasureSpec, <span class="number">0</span>);<span class="comment">//这里先对子View进行处理</span></div><div class="line">				</div><div class="line">				<span class="comment">//接着开始测量</span></div><div class="line">                <span class="keyword">final</span> LayoutParams lp = (LayoutParams) child.getLayoutParams();</div><div class="line">                maxWidth = Math.max(maxWidth,</div><div class="line">                        child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);</div><div class="line">                maxHeight = Math.max(maxHeight,</div><div class="line">                        child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);</div><div class="line">                childState = combineMeasuredStates(childState, child.getMeasuredState());</div><div class="line">                <span class="keyword">if</span> (measureMatchParentChildren) &#123;</div><div class="line">                    <span class="keyword">if</span> (lp.width == LayoutParams.MATCH_PARENT ||</div><div class="line">                            lp.height == LayoutParams.MATCH_PARENT) &#123;</div><div class="line">                        mMatchParentChildren.add(child);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">		</div><div class="line">		<span class="comment">// ... ...</span></div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>到这里就需要看下measureChildWithMargins方法了，点进去之后发现在ViewGroup里面,这里对子View进行了测量处理<br>ViewGroup.class:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">measureChildWithMargins</span><span class="params">(View child,</span></span></div><div class="line"><span class="function"><span class="params">            <span class="keyword">int</span> parentWidthMeasureSpec, <span class="keyword">int</span> widthUsed,</span></span></div><div class="line"><span class="function"><span class="params">            <span class="keyword">int</span> parentHeightMeasureSpec, <span class="keyword">int</span> heightUsed)</span> </span>&#123;</div><div class="line">        <span class="keyword">final</span> MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();</div><div class="line"></div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,</div><div class="line">                mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin</div><div class="line">                        + widthUsed, lp.width);</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,</div><div class="line">                mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin</div><div class="line">                        + heightUsed, lp.height);</div><div class="line"></div><div class="line">        child.measure(childWidthMeasureSpec, childHeightMeasureSpec);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>因为他们的继承关系是：ScrollView继承FrameLaout继承ViewGroup，而SrcollView的子View是ListView，所以重点看下ScrollVIew的measureChildWithMargins方法。如下：<br>ScrollView.class :<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">measureChildWithMargins</span><span class="params">(View child, <span class="keyword">int</span> parentWidthMeasureSpec, <span class="keyword">int</span> widthUsed,</span></span></div><div class="line"><span class="function"><span class="params">            <span class="keyword">int</span> parentHeightMeasureSpec, <span class="keyword">int</span> heightUsed)</span> </span>&#123;</div><div class="line">        <span class="keyword">final</span> MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();</div><div class="line"></div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,</div><div class="line">                mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin</div><div class="line">                        + widthUsed, lp.width);</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> usedTotal = mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin +</div><div class="line">                heightUsed;</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> childHeightMeasureSpec = MeasureSpec.makeSafeMeasureSpec(</div><div class="line">                Math.max(<span class="number">0</span>, MeasureSpec.getSize(parentHeightMeasureSpec) - usedTotal),</div><div class="line">                MeasureSpec.UNSPECIFIED);</div><div class="line"></div><div class="line">        child.measure(childWidthMeasureSpec, childHeightMeasureSpec);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>这句很关键，它给所有的子View的MODE设置为MeasureSpec.UNSPECIFIED<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> <span class="keyword">int</span> childHeightMeasureSpec = MeasureSpec.makeSafeMeasureSpec(</div><div class="line">                Math.max(<span class="number">0</span>, MeasureSpec.getSize(parentHeightMeasureSpec) - usedTotal),</div><div class="line">                MeasureSpec.UNSPECIFIED);</div></pre></td></tr></table></figure></p>
+<p>而在ListView的onMeasure中可以看到：<br>ListView.class:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">        <span class="comment">// Sets up mListPadding</span></div><div class="line">        <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</div><div class="line"></div><div class="line">        <span class="comment">// ... ...</span></div><div class="line"></div><div class="line">        <span class="keyword">if</span> (widthMode == MeasureSpec.UNSPECIFIED) &#123;</div><div class="line">            widthSize = mListPadding.left + mListPadding.right + childWidth +</div><div class="line">                    getVerticalScrollbarWidth();</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            widthSize |= (childState &amp; MEASURED_STATE_MASK);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (heightMode == MeasureSpec.UNSPECIFIED) &#123;<span class="comment">//高度测量</span></div><div class="line">            heightSize = mListPadding.top + mListPadding.bottom + childHeight +</div><div class="line">                    getVerticalFadingEdgeLength() * <span class="number">2</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (heightMode == MeasureSpec.AT_MOST) &#123;<span class="comment">//测量每个child累加起来的高度</span></div><div class="line">            <span class="comment">// <span class="doctag">TODO:</span> after first layout we should maybe start at the first visible position, not 0</span></div><div class="line">            heightSize = measureHeightOfChildren(widthMeasureSpec, <span class="number">0</span>, NO_POSITION, heightSize, -<span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        setMeasuredDimension(widthSize, heightSize);</div><div class="line"></div><div class="line">        mWidthMeasureSpec = widthMeasureSpec;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>这里可以看到在MODE是MeasureSpec.UNSPECIFIED的情况下，只计算了一个View的高度<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">heightSize = mListPadding.top + mListPadding.bottom + childHeight +</div><div class="line">                   getVerticalFadingEdgeLength() * <span class="number">2</span>;</div></pre></td></tr></table></figure></p>
+<p>这就是为什么只看到一个Item的原因。</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>当MODE是MeasureSpec.UNSPECIFIED的情况下，只计算了一个View的高度。所以要设置MODE,当MODE是MeasureSpec.AT_MOST时会调用measureHeightOfChildren方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment"> * @return The height of this ListView with the given children.</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">measureHeightOfChildren</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> startPosition, <span class="keyword">int</span> endPosition,</span></span></div><div class="line"><span class="function"><span class="params">        <span class="keyword">int</span> maxHeight, <span class="keyword">int</span> disallowPartialChildPosition)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> ListAdapter adapter = mAdapter;</div><div class="line">    <span class="keyword">if</span> (adapter == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span> mListPadding.top + mListPadding.bottom;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Include the padding of the list</span></div><div class="line">    <span class="keyword">int</span> returnedHeight = mListPadding.top + mListPadding.bottom;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> dividerHeight = mDividerHeight;</div><div class="line">    <span class="comment">// The previous height value that was less than maxHeight and contained</span></div><div class="line">    <span class="comment">// no partial children</span></div><div class="line">    <span class="keyword">int</span> prevHeightWithoutPartialChild = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    View child;</div><div class="line"></div><div class="line">    <span class="comment">// mItemCount - 1 since endPosition parameter is inclusive</span></div><div class="line">    endPosition = (endPosition == NO_POSITION) ? adapter.getCount() - <span class="number">1</span> : endPosition;</div><div class="line">    <span class="keyword">final</span> AbsListView.RecycleBin recycleBin = mRecycler;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">boolean</span> recyle = recycleOnMeasure();</div><div class="line">    <span class="keyword">final</span> <span class="keyword">boolean</span>[] isScrap = mIsScrap;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (i = startPosition; i &lt;= endPosition; ++i) &#123;</div><div class="line">        child = obtainView(i, isScrap);</div><div class="line"></div><div class="line">        measureScrapChild(child, i, widthMeasureSpec, maxHeight);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (i &gt; <span class="number">0</span>) &#123;</div><div class="line">            <span class="comment">// Count the divider for all but one child</span></div><div class="line">            returnedHeight += dividerHeight;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// Recycle the view before we possibly return from the method</span></div><div class="line">        <span class="keyword">if</span> (recyle &amp;&amp; recycleBin.shouldRecycleViewType(</div><div class="line">                ((LayoutParams) child.getLayoutParams()).viewType)) &#123;</div><div class="line">            recycleBin.addScrapView(child, -<span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        returnedHeight += child.getMeasuredHeight();<span class="comment">//for循环中累加child的高度</span></div><div class="line"></div><div class="line">        <span class="keyword">if</span> (returnedHeight &gt;= maxHeight) &#123;</div><div class="line">            <span class="comment">// We went over, figure out which height to return.  If returnedHeight &gt; maxHeight,</span></div><div class="line">            <span class="comment">// then the i'th position did not fit completely.</span></div><div class="line">            <span class="keyword">return</span> (disallowPartialChildPosition &gt;= <span class="number">0</span>) <span class="comment">// Disallowing is enabled (&gt; -1)</span></div><div class="line">                        &amp;&amp; (i &gt; disallowPartialChildPosition) <span class="comment">// We've past the min pos</span></div><div class="line">                        &amp;&amp; (prevHeightWithoutPartialChild &gt; <span class="number">0</span>) <span class="comment">// We have a prev height</span></div><div class="line">                        &amp;&amp; (returnedHeight != maxHeight) <span class="comment">// i'th child did not fit completely</span></div><div class="line">                    ? prevHeightWithoutPartialChild</div><div class="line">                    : maxHeight;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> ((disallowPartialChildPosition &gt;= <span class="number">0</span>) &amp;&amp; (i &gt;= disallowPartialChildPosition)) &#123;</div><div class="line">            prevHeightWithoutPartialChild = returnedHeight;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// At this point, we went through the range of children, and they each</span></div><div class="line">    <span class="comment">// completely fit, so return the returnedHeight</span></div><div class="line">    <span class="keyword">return</span> returnedHeight;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>返回的是child的高度，这就没问题，那么如何制定MODE的值为AT_MOST呢<br>这里借用了网上的解决方案，继承ListView，重写onMeasure()方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">    MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE &gt;&gt; <span class="number">2</span>, MeasureSpec.AT_MOST);<span class="comment">//制定MODE和size</span></div><div class="line">    <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>MeasureSpec.class:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment"> * @return the measure specification based on size and mode</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">makeMeasureSpec</span><span class="params">(@IntRange(from = <span class="number">0</span>, to = (<span class="number">1</span> &lt;&lt; MeasureSpec.MODE_SHIFT)</span> - 1) <span class="keyword">int</span> size,</span></div><div class="line"><span class="function">                                  @MeasureSpecMode <span class="keyword">int</span> mode) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (sUseBrokenMakeMeasureSpec) &#123;</div><div class="line">        <span class="keyword">return</span> size + mode;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> (size &amp; ~MODE_MASK) | (mode &amp; MODE_MASK);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>之后就会调用父类的onMeasure方法，重新测量。<br>为什么会是Integer.MAX_VALUE&gt;&gt;2呢？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (returnedHeight &gt;= maxHeight) &#123;</div><div class="line">    <span class="comment">// We went over, figure out which height to return.  If returnedHeight &gt; maxHeight,</span></div><div class="line">    <span class="comment">// then the i'th position did not fit completely.</span></div><div class="line">    <span class="keyword">return</span> (disallowPartialChildPosition &gt;= <span class="number">0</span>) <span class="comment">// Disallowing is enabled (&gt; -1)</span></div><div class="line">                &amp;&amp; (i &gt; disallowPartialChildPosition) <span class="comment">// We've past the min pos</span></div><div class="line">                &amp;&amp; (prevHeightWithoutPartialChild &gt; <span class="number">0</span>) <span class="comment">// We have a prev height</span></div><div class="line">                &amp;&amp; (returnedHeight != maxHeight) <span class="comment">// i'th child did not fit completely</span></div><div class="line">            ? prevHeightWithoutPartialChild</div><div class="line">            : maxHeight;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们需要的是returnedHeight，所以该if不能让它成立，要给maxHeight一个最大的值，第一个参数Integer.MAX_VALUE&gt;&gt;2，这个参数是传的一个大小值，它的大小最大值是int的最低30位的最大值，我们先取Integer.MAX_VALUE来获取int值的最大值，然后右移2位就得到这个临界值最大值了。。。恍恍惚惚。。。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在ListView对Item的测量中，在MODE为UNSPECIFIED的情况下，只计算一个child的高度。而ScrollView中对所有的子View的MODE都设置为UNSPECIFIED。所以当ScrollView镶嵌了ListView，ListView成为了子View，那么就会出现显示不全的问题。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+	
+	<div>
+  
+    
+<div style="text-align:center;color: #ccc;font-size:14px;">
+------ 本文结束 ------</div>
+<br/>
+<div style="border: 1px solid black">
+<div style="margin-left:10px">
+
+<span style="font-weight:blod">版权声明</span>
+<img src="http://kuangqi.me/images/cc.png" >
+<br/>
+<link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>文章作者: </span><a href="/" title="访问 周 康 的个人博客">周 康</a></p>
+  <p><span>发布时间: </span>2016年07月23日 - 00:07</p>
+  <p><span>原始链接: </span><a href="/2016/07/23/ScrollView镶嵌ListView的问题/" title="ScrollView镶嵌ListView问题原因分析">http://Kanging.github.io/2016/07/23/ScrollView镶嵌ListView的问题/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://Kanging.github.io/2016/07/23/ScrollView镶嵌ListView的问题/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议: </span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+</div>
+
+  
+</div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/18/Activity的启动流程/" rel="next" title="Activity的启动流程">
+                <i class="fa fa-chevron-left"></i> Activity的启动流程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/15/View的绘制流程/" rel="prev" title="View的绘制流程">
+                View的绘制流程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537"
+                alt="周 康" />
+            
+              <p class="site-author-name" itemprop="name">周 康</p>
+              <p class="site-description motion-element" itemprop="description">爱学习的好孩子</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="799310042@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/zhouklang" target="_blank" title="新浪微博">
+                    
+                      <i class="fa fa-fw fa-globe"></i>新浪微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:周康?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决方案"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">周 康</span>
+
+  
+</div>
+
+
+  <!-- <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div> 
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div> -->
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
