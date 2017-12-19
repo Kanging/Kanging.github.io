@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="Android,NFC,IOT," />
+  <meta name="keywords" content="随笔," />
 
 
 
@@ -105,18 +105,18 @@
 
 
 
-<meta name="description" content="概述ListView是我最初学Android时最常用的几个控件之一了，那时候根本不知道什么是自定义View，什么是优化。后来看了别人写的代码才发现在getView里面还能有这样的操作呢！ListView的优化是我每次去面试必问的几道面试题之一。当然内容也很简单，今天不细讲，就大概汇总一下。 ListView的优化方案 复用converView目的不用每次都findViewbyid  定义静态内部类">
-<meta name="keywords" content="Android,NFC,IOT">
+<meta name="description" content="我的内心有一条河流，流淌着美丽的仲春，花儿在这头，风筝在那头。">
+<meta name="keywords" content="随笔">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ListView的优化">
-<meta property="og:url" content="http://Kanging.github.io/2016/03/25/ListView的优化/index.html">
+<meta property="og:title" content="河流">
+<meta property="og:url" content="http://Kanging.github.io/2017/11/14/河流/index.html">
 <meta property="og:site_name" content="周康的博客">
-<meta property="og:description" content="概述ListView是我最初学Android时最常用的几个控件之一了，那时候根本不知道什么是自定义View，什么是优化。后来看了别人写的代码才发现在getView里面还能有这样的操作呢！ListView的优化是我每次去面试必问的几道面试题之一。当然内容也很简单，今天不细讲，就大概汇总一下。 ListView的优化方案 复用converView目的不用每次都findViewbyid  定义静态内部类">
+<meta property="og:description" content="我的内心有一条河流，流淌着美丽的仲春，花儿在这头，风筝在那头。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-14T00:40:14.949Z">
+<meta property="og:updated_time" content="2017-12-19T08:04:12.774Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ListView的优化">
-<meta name="twitter:description" content="概述ListView是我最初学Android时最常用的几个控件之一了，那时候根本不知道什么是自定义View，什么是优化。后来看了别人写的代码才发现在getView里面还能有这样的操作呢！ListView的优化是我每次去面试必问的几道面试题之一。当然内容也很简单，今天不细讲，就大概汇总一下。 ListView的优化方案 复用converView目的不用每次都findViewbyid  定义静态内部类">
+<meta name="twitter:title" content="河流">
+<meta name="twitter:description" content="我的内心有一条河流，流淌着美丽的仲春，花儿在这头，风筝在那头。">
 
 
 
@@ -146,13 +146,13 @@
 
 
 
-  <link rel="canonical" href="http://Kanging.github.io/2016/03/25/ListView的优化/"/>
+  <link rel="canonical" href="http://Kanging.github.io/2017/11/14/河流/"/>
 
 
 
 
 
-  <title>ListView的优化 | 周康的博客</title>
+  <title>河流 | 周康的博客</title>
   
 
 
@@ -299,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2016/03/25/ListView的优化/">
+    <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2017/11/14/河流/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="周 康">
@@ -316,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ListView的优化</h1>
+          <h1 class="post-title" itemprop="name headline">河流</h1>
         
 
         <div class="post-meta">
@@ -328,8 +328,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-25T00:00:00+08:00">
-                2016-03-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-14T00:00:00+08:00">
+                2017-11-14
               </time>
             
 
@@ -351,8 +351,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
                   </a>
                 </span>
 
@@ -388,25 +388,13 @@
       
 
       
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>ListView是我最初学Android时最常用的几个控件之一了，那时候根本不知道什么是自定义View，什么是优化。后来看了别人写的代码才发现在getView里面还能有这样的操作呢！ListView的优化是我每次去面试必问的几道面试题之一。当然内容也很简单，今天不细讲，就大概汇总一下。</p>
-<h1 id="ListView的优化方案"><a href="#ListView的优化方案" class="headerlink" title="ListView的优化方案"></a>ListView的优化方案</h1><ol>
-<li><p>复用converView<br>目的不用每次都findViewbyid</p>
-</li>
-<li><p>定义静态内部类ViewHolder<br>为了避免对外部类（外部类很可能是Activity）对象的引用，那么最好将内部类声明为static的（非必须的）。</p>
-</li>
-<li><p>尽可能减少在getView中的逻辑判断</p>
-</li>
-<li><p>Item布局优化<br>减少布局镶嵌，减少背景覆盖（重复渲染）</p>
-</li>
-<li><p>滑动时停止加载图片</p>
-</li>
-<li><p>使用分页</p>
-</li>
-<li><p>数据类型考虑使用弱引用</p>
-</li>
-<li><p>缓存</p>
-</li>
-</ol>
+        <blockquote class="blockquote-center"><em><br>我的内心有一条河流，<br><br>流淌着美丽的仲春，<br><br>花儿在这头，<br><br>风筝在那头。<br><a id="more"></a><br>我的内心有一条河流，<br><br>流淌着冷酷的深秋。<br><br>西风在这头，<br><br>离别在那头。<br><br>我的内心有一条河流，<br><br>流淌着深邃的岁月，<br><br>纸飞机在这头，<br><br>轮椅在那头。<br><br>我的内心有一条河流，<br><br>流淌着不羁的自由，<br><br>大海在这头，<br><br>高山在那头。
+
+</em></blockquote>
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=524148277&auto=1&height=66"></iframe>
+
+
 
       
     </div>
@@ -434,9 +422,9 @@
 <br/>
 <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
   <p><span>文章作者: </span><a href="/" title="访问 周 康 的个人博客">周 康</a></p>
-  <p><span>发布时间: </span>2016年03月25日 - 00:03</p>
-  <p><span>原始链接: </span><a href="/2016/03/25/ListView的优化/" title="ListView的优化">http://Kanging.github.io/2016/03/25/ListView的优化/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://Kanging.github.io/2016/03/25/ListView的优化/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间: </span>2017年11月14日 - 00:11</p>
+  <p><span>原始链接: </span><a href="/2017/11/14/河流/" title="河流">http://Kanging.github.io/2017/11/14/河流/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://Kanging.github.io/2017/11/14/河流/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议: </span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -449,11 +437,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag"># Android</a>
-          
-            <a href="/tags/NFC/" rel="tag"># NFC</a>
-          
-            <a href="/tags/IOT/" rel="tag"># IOT</a>
+            <a href="/tags/随笔/" rel="tag"># 随笔</a>
           
         </div>
       
@@ -466,8 +450,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/19/okhttp+Rxjava+Retrofit完全封转，即拿即用/" rel="next" title="OkHttp+RxJava+Retrofit完全封转">
-                <i class="fa fa-chevron-left"></i> OkHttp+RxJava+Retrofit完全封转
+              <a href="/2017/11/03/我有故事，在寻找酒/" rel="next" title="我有故事，在寻找酒">
+                <i class="fa fa-chevron-left"></i> 我有故事，在寻找酒
               </a>
             
           </div>
@@ -476,8 +460,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/06/30/HashMap算法/" rel="prev" title="HashMap排序">
-                HashMap排序 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/01/01/introduce/" rel="prev" title="【置顶】说明">
+                【置顶】说明 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -530,17 +514,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -626,22 +601,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ListView的优化方案"><span class="nav-number">2.</span> <span class="nav-text">ListView的优化方案</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

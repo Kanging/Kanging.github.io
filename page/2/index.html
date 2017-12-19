@@ -298,6 +298,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2016/07/18/Activity的启动流程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="周 康">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG//sys/portrait/item/5780e4bda0e5a5bde5b08fe587a16b6be639.jpg?cdnversion=4537">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周康的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/18/Activity的启动流程/" itemprop="url">Activity的启动流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-18T00:00:00+08:00">
+                2016-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>昨天已经差不多写好这篇博文了，只剩下最后的总结没写，想着今早再补上去，结果忘记保存了（写的那么长竟然也能忘记保存，我挺佩服自己的）。。。按理说没保存也能在缓存里面找回来的，可是今早开电脑的时候手贱点开了360清理了一下，现在心里可苦可苦了。还好只是篇文章，不是什么重要的文件，血的教训，标记一下。今天重新写过。<br>关于Activity的启动流程我也是学习了挺久的了，看了很多文章。网上也有大神觉得这个很简单，不过对于我来讲还是挺难理解的，因为里面涉及到了IPC（进程间的通讯）和binder的原理，对于这块其实我还不很熟，所以先学习了IPC和binder再来研究Activity的启动流程，学习嘛，一定要学到关键的地方，要了解原理，不然很快就忘了。现在开始吧<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/07/18/Activity的启动流程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+	
+	<div>
+  
+</div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://Kanging.github.io/2016/06/30/HashMap算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -392,7 +542,7 @@
           
             <div class="post-gallery-row">
               <a class="post-gallery-img fancybox"
-                 href="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508492533211&di=de3abd21f5b11532b18ebae729c43827&imgtype=0&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20160914%2F38b0c776230244d7a7b7431c85bde0ac_th.jpg" rel="gallery_cjarr1p9h000tmcr87e4rmchg"
+                 href="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508492533211&di=de3abd21f5b11532b18ebae729c43827&imgtype=0&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20160914%2F38b0c776230244d7a7b7431c85bde0ac_th.jpg" rel="gallery_cjbdcmeck0006u8r8ryb8hfki"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508492533211&di=de3abd21f5b11532b18ebae729c43827&imgtype=0&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20160914%2F38b0c776230244d7a7b7431c85bde0ac_th.jpg" itemprop="contentUrl"/>
               </a>
@@ -722,7 +872,7 @@
           
             <div class="post-gallery-row">
               <a class="post-gallery-img fancybox"
-                 href="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=674083392,556296263&fm=27&gp=0.jpg" rel="gallery_cjarr1p9d000nmcr8uco18xhw"
+                 href="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=674083392,556296263&fm=27&gp=0.jpg" rel="gallery_cjbdcmed5000nu8r8cn4cgq7n"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=674083392,556296263&fm=27&gp=0.jpg" itemprop="contentUrl"/>
               </a>
@@ -835,7 +985,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
