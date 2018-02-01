@@ -105,18 +105,20 @@
 
 
 
-<meta name="description" content="概述">
+<meta name="description" content="概述小程序的源码里都会有详细的注释，这里就不罗嗦了，需要说明的是在开发小程序过程中遇见的各种坑。">
 <meta name="keywords" content="Android,微信小程序">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信小程序（七）——前端小程序篇">
 <meta property="og:url" content="http://Kanging.github.io/2018/01/19/微信小程序（七）——前端小程序篇/index.html">
 <meta property="og:site_name" content="周康的博客">
-<meta property="og:description" content="概述">
+<meta property="og:description" content="概述小程序的源码里都会有详细的注释，这里就不罗嗦了，需要说明的是在开发小程序过程中遇见的各种坑。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-29T07:24:46.302Z">
+<meta property="og:image" content="http://img1.imgtn.bdimg.com/it/u=3739264407,1878185552&fm=27&gp=0.jpg">
+<meta property="og:updated_time" content="2018-02-01T03:48:08.864Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信小程序（七）——前端小程序篇">
-<meta name="twitter:description" content="概述">
+<meta name="twitter:description" content="概述小程序的源码里都会有详细的注释，这里就不罗嗦了，需要说明的是在开发小程序过程中遇见的各种坑。">
+<meta name="twitter:image" content="http://img1.imgtn.bdimg.com/it/u=3739264407,1878185552&fm=27&gp=0.jpg">
 
 
 
@@ -386,9 +388,33 @@
 
       
       
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="http://img1.imgtn.bdimg.com/it/u=3739264407,1878185552&fm=27&gp=0.jpg" rel="gallery_cjd46ojr2001nh8r8rpnu8q72"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="http://img1.imgtn.bdimg.com/it/u=3739264407,1878185552&fm=27&gp=0.jpg" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
 
       
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1>
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>小程序的源码里都会有详细的注释，这里就不罗嗦了，需要说明的是在开发小程序过程中遇见的各种坑。<br><a id="more"></a> </p>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><h3 id="1-开通腾讯云服务"><a href="#1-开通腾讯云服务" class="headerlink" title="1. 开通腾讯云服务"></a>1. 开通腾讯云服务</h3><p>我们的小程序要正式发布的话，肯定是要跟云服务器结合的。腾讯云给我们提供了详细的文档和解决方案。老实讲，文档呢都是针对旧版本写的，IDE和SDK虽然是最新的，但是文档却是之前版本的。针对新手来讲，真的能让人摸不着北。<br>我们开通腾讯云服务需要以下几个步骤：<br><img src="http://oxr4g4c3v.bkt.clouddn.com/tenctentclund.jpg" width="”300”" height="”180”"><br>我在开通的时候，总是第5步在上传代码的时候出现了以下问题“当前APPID未授权给腾讯云”：<br><img src="http://oxr4g4c3v.bkt.clouddn.com/nopession.jpg" width="”300”" height="”180”"><br>你要开通腾讯云就要经过第5步上传代码。可是你没开通腾讯云，就无法上传代码。可以说非常尴尬了。<br>解决办法：先退出腾讯云登录。再以公众号账号登录腾讯云。我就是因为用个人微信号登录腾讯云才出现这个问题的。就算公众号跟个人微信号是绑定的，你也不能用个人微信号进行登录。<br><img src="http://oxr4g4c3v.bkt.clouddn.com/overopen.jpg" width="”300”" height="”180”"></p>
+<h3 id="2-小程序POST请求"><a href="#2-小程序POST请求" class="headerlink" title="2. 小程序POST请求"></a>2. 小程序POST请求</h3><p>官网给出的实例是GET请求：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">wx.request(&#123;</div><div class="line">  url: 'test.php', //仅为示例，并非真实的接口地址，默认GET请求</div><div class="line">  data: &#123;</div><div class="line">     x: '' ,</div><div class="line">     y: ''</div><div class="line">  &#125;,</div><div class="line">  header: &#123;</div><div class="line">      'content-type': 'application/json' // 默认值</div><div class="line">  &#125;,</div><div class="line">  success: function(res) &#123;</div><div class="line">    console.log(res.data)</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>如果要换成POST请求的话，需要添加method: “POST”。另外特别注意header部分是’content-type’: ‘application/x-www-form-urlencoded’ 。跟GET方式不一样，不然后台接受不到数据：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">wx.request(&#123;</div><div class="line">  url: '你的url',</div><div class="line">  data: &#123;</div><div class="line">    code: code</div><div class="line">  &#125;,</div><div class="line">  method: "POST",</div><div class="line">  header: &#123;</div><div class="line">    'content-type': 'application/x-www-form-urlencoded' // 默认值</div><div class="line">  &#125;,</div><div class="line">  success: function (res) &#123;</div><div class="line">    // console.log(res)</div><div class="line"></div><div class="line">  &#125;,</div><div class="line">  fail: function (err) &#123;</div><div class="line">    console.log("服务器访问失败")</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<h3 id="3-网络请求完成后，数据同步"><a href="#3-网络请求完成后，数据同步" class="headerlink" title="3. 网络请求完成后，数据同步"></a>3. 网络请求完成后，数据同步</h3><p>我们会在app.js中进行一些初始化的网络加载，例如获取用户信息。网络加载是异步进行的。当我们已近进入小程序主页的时候，可能app.js里面的网络请求还未加载完毕。一旦请求结束后，如何通知页面更新数据？<br>可以在app.js中使用userInfoReadyCallback。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">wx.request(&#123;</div><div class="line">     url: &apos;你的url&apos;,</div><div class="line">     data: &#123;</div><div class="line">       code: code</div><div class="line">     &#125;,</div><div class="line">     method: &quot;POST&quot;,</div><div class="line">     header: &#123;</div><div class="line">       &apos;content-type&apos;: &apos;application/x-www-form-urlencoded&apos; // 默认值</div><div class="line">     &#125;,</div><div class="line">     success: function (res) &#123;//数据成功加载后</div><div class="line">       // console.log(res)</div><div class="line">       // do something</div><div class="line">       wx.getUserInfo(&#123;//此请求写在此处是为了ReadyCallback，当所有的加载都完成时才进行下一步操作</div><div class="line">         success: res =&gt; &#123;</div><div class="line">           that.globalData.userInfo = res.userInfo</div><div class="line">           if (that.userInfoReadyCallback) &#123;//数据更新回调，传递res</div><div class="line">             that.userInfoReadyCallback(res)</div><div class="line">           &#125;</div><div class="line">         &#125;</div><div class="line">       &#125;)</div><div class="line">     &#125;,</div><div class="line">     fail: function (err) &#123;</div><div class="line">       console.log(&quot;服务器访问失败&quot;)</div><div class="line">     &#125;</div><div class="line">   &#125;)</div></pre></td></tr></table></figure></p>
+<p>然后在你的页面，例如index页面中，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const app = getApp()</div><div class="line">Page(&#123;</div><div class="line"> app.userInfoReadyCallback = res =&gt; &#123;//res就是上面传递过来的</div><div class="line">  // do something</div><div class="line"> &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<h3 id="4-跳转传参-生命周期"><a href="#4-跳转传参-生命周期" class="headerlink" title="4. 跳转传参+生命周期"></a>4. 跳转传参+生命周期</h3><p>这里的话文档会表述的更加详细，提供一下链接：<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/api/ui-navigate.html" title="页面跳转" target="_blank" rel="external">页面跳转</a></p>
+<h3 id="5-获取openid和发送模板服务消息"><a href="#5-获取openid和发送模板服务消息" class="headerlink" title="5. 获取openid和发送模板服务消息"></a>5. 获取openid和发送模板服务消息</h3><p>要对用户身份进行验证，肯定获取openid。这个十分重要。但是在本地的服务器后台获取openid会报关于证书的错误（CURLOPT_SSL_VERIFYHOST no longer accepts the value 1），测试版项目本身也是没有证书的。这样就无法在本地获取openid了。所以要结合新浪的SAE来获取。这是下节的主要内容。</p>
+
       
     </div>
     
@@ -615,7 +641,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注意事项"><span class="nav-number">2.</span> <span class="nav-text">注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-开通腾讯云服务"><span class="nav-number">2.0.1.</span> <span class="nav-text">1. 开通腾讯云服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-小程序POST请求"><span class="nav-number">2.0.2.</span> <span class="nav-text">2. 小程序POST请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-网络请求完成后，数据同步"><span class="nav-number">2.0.3.</span> <span class="nav-text">3. 网络请求完成后，数据同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-跳转传参-生命周期"><span class="nav-number">2.0.4.</span> <span class="nav-text">4. 跳转传参+生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-获取openid和发送模板服务消息"><span class="nav-number">2.0.5.</span> <span class="nav-text">5. 获取openid和发送模板服务消息</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
